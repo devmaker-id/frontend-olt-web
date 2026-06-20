@@ -1,0 +1,17 @@
+export interface LoginRequest {
+    username: string
+    password: string
+}
+
+export interface LoginResponse {
+    success: boolean
+    message: string
+    data: {
+        token: string
+        user: {
+            id: string
+            username: string
+            role: string
+        }
+    }
+}
