@@ -1,9 +1,7 @@
-import { useMemo } from 'react'
-import { useState } from 'react'
-
-import Swal from 'sweetalert2'
-
-import { Link } from 'react-router-dom'
+import {
+  useMemo,
+  useState,
+} from 'react'
 
 import { Plus } from 'lucide-react'
 import { RefreshCw } from 'lucide-react'
@@ -29,6 +27,11 @@ import { useDeleteOlt } from '../hooks/use-delete-olt'
 import { OltTable } from '../components/olt-table'
 
 import type { Olt } from '../types/olt.types'
+import { CreateOltDialog } from '../components/create-olt-dialog'
+import { EditOltDialog } from '../components/edit-olt-dialog'
+import { OltDetailSheet } from '../components/olt-detail-sheet'
+import { OltConnectSheet } from '../components/olt-connect-sheet'
+import { toast } from 'sonner'
 
 export function OltListPage() {
   const {
@@ -38,31 +41,21 @@ export function OltListPage() {
     refetch,
   } = useOlts()
 
-  const deleteMutation =
-    useDeleteOlt()
+  const deleteMutation = useDeleteOlt()
 
-  const [search, setSearch] =
-    useState('')
-
-  const [page, setPage] =
-    useState(1)
-
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
   const pageSize = 10
 
-  const [
-    selectedOlt,
-    setSelectedOlt,
-  ] = useState<Olt | null>(
-    null
-  )
+  const [selectedOlt, setSelectedOlt] = useState<Olt | null>(null)
+  const [createOpen, setCreateOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [detailOpen, setDetailOpen] = useState(false)
+  const [connectOpen, setConnectOpen] = useState(false)
 
-  const [
-    deleteOpen,
-    setDeleteOpen,
-  ] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
-  const filteredOlts =
-    useMemo(() => {
+  const filteredOlts = useMemo(() => {
 
       if (!data) {
         return []
@@ -108,37 +101,16 @@ export function OltListPage() {
       page * pageSize
     )
 
-  async function
-  handleDelete() {
+  async function handleDelete() {
     if (!selectedOlt) {
       return
     }
-
-    try {
-
-      await deleteMutation
-        .mutateAsync(
-          selectedOlt.id
-        )
-
-      await Swal.fire({
-        icon: 'success',
-        title:
-          'OLT Deleted',
-      })
-
-      setDeleteOpen(false)
-
-      refetch()
-
-    } catch {
-
-      Swal.fire({
-        icon: 'error',
-        title:
-          'Delete Failed',
-      })
-    }
+    await deleteMutation.mutateAsync(selectedOlt.id)
+    toast.success(
+      'Olt Deleted, Success'
+    )
+    setDeleteOpen(false)
+    setSelectedOlt(null)
   }
 
   if (isLoading) {
@@ -197,31 +169,45 @@ export function OltListPage() {
               Refresh
             </Button>
 
-            <Button asChild>
-              <Link
-                to="/olt/create"
-              >
-                <Plus />
-                Create OLT
-              </Link>
+            <Button
+              onClick={() => setCreateOpen(true)}
+            >
+              <Plus />
+              Create OLT
             </Button>
           </>
         }
       />
 
       <OltTable
+        onConnect={
+          (olt) => {
+            setSelectedOlt(olt)
+          setConnectOpen(true)
+
+          }
+        }
         olts={
           paginatedOlts
         }
-        onDelete={(olt) => {
-          setSelectedOlt(
-            olt
-          )
-
-          setDeleteOpen(
-            true
-          )
-        }}
+        onView={
+          (olt) => {
+            setSelectedOlt(olt)
+            setDetailOpen(true)
+          }
+        }
+        onEdit={
+          (olt) => {
+            setSelectedOlt(olt)
+            setEditOpen(true)
+          }
+        }
+        onDelete={
+          (olt) => {
+            setSelectedOlt(olt)
+            setDeleteOpen(true)
+          }
+        }
       />
 
       <DataTablePagination
@@ -234,16 +220,36 @@ export function OltListPage() {
         }
       />
 
+      <CreateOltDialog
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+      />
+      <EditOltDialog
+        olt={selectedOlt}
+        open={editOpen}
+        onOpenChange={setEditOpen}
+      />
+      <OltDetailSheet
+        olt={selectedOlt}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+        onEdit={() => {
+          setDetailOpen(false)
+          setEditOpen(true)
+        }}
+      />
+      <OltConnectSheet
+        olt={selectedOlt}
+        open={connectOpen}
+        onOpenChange={setConnectOpen}
+      />
       <ConfirmDelete
         open={deleteOpen}
-        onOpenChange={
-          setDeleteOpen
-        }
+        onOpenChange={setDeleteOpen}
         title="Delete OLT"
-        description={`Delete ${selectedOlt?.name}?`}
-        onConfirm={
-          handleDelete
-        }
+        description={`Delete OLT "${selectedOlt?.name}"?`}
+        onConfirm={handleDelete}
+        isLoading={deleteMutation.isPending}
       />
     </PageContainer>
   )

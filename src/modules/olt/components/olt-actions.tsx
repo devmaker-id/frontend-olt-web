@@ -1,18 +1,23 @@
-import { Eye } from 'lucide-react'
-import { Pencil } from 'lucide-react'
-import { Trash2 } from 'lucide-react'
-
-import { Link } from 'react-router-dom'
+import {
+  Eye,
+  Pencil,
+  Trash2,
+  Plug,
+} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
 interface Props {
-  id: string
+  onConnect: () => void
+  onView: () => void
+  onEdit: () => void
   onDelete: () => void
 }
 
 export function OltActions({
-  id,
+  onConnect,
+  onView,
+  onEdit,
   onDelete,
 }: Props) {
 
@@ -20,25 +25,27 @@ export function OltActions({
     <>
       <div className="flex gap-2">
         <Button
-          asChild
           size="icon"
           variant="outline"
+          onClick={onConnect}
         >
-          <Link to={`/olt/${id}`}>
-            <Eye />
-          </Link>
+          <Plug />
+        </Button>
+        
+        <Button
+          size="icon"
+          variant="outline"
+          onClick={onView}
+        >
+          <Eye />
         </Button>
 
         <Button
-          asChild
           size="icon"
           variant="outline"
+          onClick={onEdit}
         >
-          <Link
-            to={`/olt/${id}/edit`}
-          >
-            <Pencil />
-          </Link>
+          <Pencil />
         </Button>
 
         <Button

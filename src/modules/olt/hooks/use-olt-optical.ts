@@ -7,7 +7,7 @@ import {
 } from '../api/olt.api'
 
 import type {
-  OltOptical
+  OltOpticalInfo
 } from '../types/olt.types'
 
 export function useOltOptical(
@@ -15,7 +15,7 @@ export function useOltOptical(
 ) {
 
   return useQuery<
-    OltOptical[]
+    OltOpticalInfo[]
   >({
 
     queryKey: [

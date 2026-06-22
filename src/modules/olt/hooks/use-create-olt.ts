@@ -1,15 +1,33 @@
-import { useMutation }
-from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 import {
-  createOlt
+  createOlt,
 } from '../api/olt.api'
 
 export function useCreateOlt() {
 
+  const queryClient =
+    useQueryClient()
+
   return useMutation({
 
     mutationFn:
-      createOlt
+      createOlt,
+
+    onSuccess() {
+
+      queryClient
+        .invalidateQueries({
+          queryKey: [
+            'olts',
+          ],
+        })
+
+    },
+
   })
+
 }

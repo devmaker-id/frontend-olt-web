@@ -1,56 +1,72 @@
-import {api} from '../../../shared/api/api'
+import {api} from '@/shared/api/api'
+import type { ApiResponse } from '@/shared/api/types'
+import type {
+  Olt,
+  CreateOltRequest,
+  UpdateOltRequest,
+  OltOpticalInfo,
+  OltConnectionInfo
+} from '../types/olt.types'
 
-export async function getOltOptical(
-  id: string
-) {
-  const response = await api.get(
-      `/olt/${id}/optical`
-    )
-  return response.data.data.data
-}
 export async function getOlts() {
-  const response =
-    await api.get(
+  const response = await api.get<ApiResponse<Olt[]>>(
       '/olt'
     )
-  return response.data
+  return response.data.data
 }
 export async function getOlt(
   id: string
 ) {
 
-  const response =
-    await api.get(
+  const response = await api.get<ApiResponse<Olt>>(
       `/olt/${id}`
     )
 
-  return response.data
+  return response.data.data
 }
-export async function connectOlt(
-  id: string
+export async function createOlt(
+  data: CreateOltRequest
 ) {
-
-  const response =
-    await api.get(
-      `/olt/${id}/connect`
-    )
-  return response.data
-}
-export async function createOlt(data:any) {
-  const response = await api.post('/olt', data)
+  const response = await api.post<ApiResponse<Olt>>(
+    '/olt',
+    data
+  )
   return response.data.data
 }
 export async function updateOlt(
   id: string,
-  data: any
+  data: UpdateOltRequest
 ) {
-  const response = await api.put(
+  const response = await api.put<ApiResponse<Olt>>(
     `/olt/${id}`,
     data
   )
   return response.data.data
 }
-export async function deleteOlt(id:string) {
-  const response = await api.delete(`/olt/${id}`)
+export async function deleteOlt(
+  id:string
+) {
+  const response = await api.delete<ApiResponse<Olt>>(
+    `/olt/${id}`
+  )
+  return response.data.data
+}
+
+
+export async function getOltOptical(
+  id: string
+) {
+  const response = await api.get<ApiResponse<OltOpticalInfo[]>>(
+      `/olt/${id}/optical`
+    )
+  return response.data.data
+}
+
+export async function connectOlt(
+  id: string
+) {
+  const response = await api.get<ApiResponse<OltConnectionInfo>>(
+      `/olt/${id}/connect`
+    )
   return response.data.data
 }

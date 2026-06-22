@@ -62,9 +62,9 @@ export function OltInfoCard({
         </div>
 
         <div>
-          <strong>Telnet Port</strong>
+          <strong>{olt.connectionType}</strong>
           <p>
-            {olt.telnetPort}
+            {olt.managementPort}
           </p>
         </div>
       </CardContent>

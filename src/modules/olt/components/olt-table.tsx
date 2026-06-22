@@ -21,14 +21,17 @@ import {
 
 interface Props {
   olts: Olt[]
-
-  onDelete: (
-    olt: Olt
-  ) => void
+  onConnect: (olt: Olt) => void
+  onView: (olt: Olt) => void
+  onEdit: (olt: Olt) => void
+  onDelete: (olt: Olt) => void
 }
 
 export function OltTable({
   olts,
+  onConnect,
+  onView,
+  onEdit,
   onDelete,
 }: Props) {
   return (
@@ -93,10 +96,10 @@ export function OltTable({
 
               <TableCell>
                 <OltActions
-                  id={olt.id}
-                  onDelete={() => {
-                    onDelete(olt)
-                  }}
+                  onConnect={() => {onConnect(olt)}}
+                  onView={() => {onView(olt)}}
+                  onEdit={() => {onEdit(olt)}}
+                  onDelete={() => {onDelete(olt)}}
                 />
               </TableCell>
             </TableRow>

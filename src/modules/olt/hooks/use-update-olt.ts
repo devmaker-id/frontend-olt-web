@@ -1,22 +1,43 @@
-import { useMutation }
-from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 import {
-  updateOlt
+  updateOlt,
 } from '../api/olt.api'
+
+import type {
+  UpdateOltMutationDto,
+} from '../types/olt.types'
 
 export function useUpdateOlt() {
 
+  const queryClient =
+    useQueryClient()
+
   return useMutation({
 
-    mutationFn:
-      ({
-        id,
-        data
-      }: any) =>
-        updateOlt(
-          id,
-          data
-        )
+    mutationFn: (
+      payload:
+        UpdateOltMutationDto,
+    ) =>
+      updateOlt(
+        payload.id,
+        payload.data,
+      ),
+
+    onSuccess() {
+
+      queryClient
+        .invalidateQueries({
+          queryKey: [
+            'olts',
+          ],
+        })
+
+    },
+
   })
+
 }
