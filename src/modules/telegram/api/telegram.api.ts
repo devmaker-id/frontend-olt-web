@@ -1,5 +1,6 @@
-import { api }
-from '../../../shared/api/api'
+import { api } from '../../../shared/api/api'
+import type { ApiResponse } from '@/shared/api/types'
+
 import type {
   TelegramUser,
   CreateTelegramUserRequest,
@@ -7,21 +8,17 @@ import type {
 } from '../types/telegram.types'
 
 export async function getTelegramUsers() {
-
-  const response =
-    await api.get<TelegramUser[]>(
+  const response = await api.get<ApiResponse<TelegramUser[]>>(
       '/telegram/users'
     )
-
-  return response.data
+  return response.data.data
 }
 
 export async function createTelegramUser(
   payload: CreateTelegramUserRequest
 ) {
 
-  const response =
-    await api.post(
+  const response = await api.post<ApiResponse<TelegramUser>>(
       '/telegram/users',
       payload
     )

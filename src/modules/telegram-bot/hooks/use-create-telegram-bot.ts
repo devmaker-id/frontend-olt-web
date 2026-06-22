@@ -12,12 +12,10 @@ import {
 } from '@/shared/lib/toast'
 
 export function useCreateTelegramBot() {
-  const queryClient =
-    useQueryClient()
+  const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn:
-      createTelegramBot,
+    mutationFn: createTelegramBot,
 
     onSuccess() {
 
@@ -27,16 +25,15 @@ export function useCreateTelegramBot() {
         ],
       })
 
-      appToast.success(
-        'Telegram bot created',
-      )
+      // appToast.success(
+      //   'Telegram bot created',
+      // )
     },
 
-    onError(error) {
-
-      appToast.error(
-        error.message,
-      )
-    },
+    // onError(error) {
+    //   appToast.error(
+    //     error.message,
+    //   )
+    // },
   })
 }

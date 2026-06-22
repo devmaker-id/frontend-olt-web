@@ -39,6 +39,7 @@ import {
 import type {
   UnauthorizedOnu,
 } from '../types/onu.types'
+import { EmptyState } from '@/shared/components/empty-state'
 
 export function UnregisteredOnuPage() {
 
@@ -69,8 +70,7 @@ export function UnregisteredOnuPage() {
     null,
   )
 
-  const filteredOnus =
-    useMemo(() => {
+  const filteredOnus = useMemo(() => {
 
       const keyword =
         search.toLowerCase()
@@ -128,6 +128,15 @@ export function UnregisteredOnuPage() {
       <LoadingState />
     )
   }
+  if (!data || data.length === 0) {
+    return (
+      <EmptyState
+        title="No Onu Unregistred"
+        description="Connect New Onu To Olt"
+      />
+    )
+  }
+
   return (
     <PageContainer>
 

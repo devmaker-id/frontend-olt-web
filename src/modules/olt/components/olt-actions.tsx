@@ -3,12 +3,14 @@ import {
   Pencil,
   Trash2,
   Plug,
+  Activity
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
 interface Props {
   onConnect: () => void
+  onOptical: () => void
   onView: () => void
   onEdit: () => void
   onDelete: () => void
@@ -16,6 +18,7 @@ interface Props {
 
 export function OltActions({
   onConnect,
+  onOptical,
   onView,
   onEdit,
   onDelete,
@@ -30,6 +33,13 @@ export function OltActions({
           onClick={onConnect}
         >
           <Plug />
+        </Button>
+        <Button
+          size="icon"
+          variant="outline"
+          onClick={onOptical}
+        >
+          <Activity />
         </Button>
         
         <Button

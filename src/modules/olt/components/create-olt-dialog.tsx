@@ -89,6 +89,8 @@ export function CreateOltDialog({
       <DialogContent
         className="
           max-w-4xl
+          max-h-[90vh]
+          overflow-y-auto
         "
       >
 

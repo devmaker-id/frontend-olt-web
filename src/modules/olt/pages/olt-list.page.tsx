@@ -32,6 +32,8 @@ import { EditOltDialog } from '../components/edit-olt-dialog'
 import { OltDetailSheet } from '../components/olt-detail-sheet'
 import { OltConnectSheet } from '../components/olt-connect-sheet'
 import { toast } from 'sonner'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { OltOpticalSheet } from '../components/olt-optical-sheet'
 
 export function OltListPage() {
   const {
@@ -52,6 +54,7 @@ export function OltListPage() {
   const [editOpen, setEditOpen] = useState(false)
   const [detailOpen, setDetailOpen] = useState(false)
   const [connectOpen, setConnectOpen] = useState(false)
+  const [opticalOpen, setOpticalOpen] = useState(false)
 
   const [deleteOpen, setDeleteOpen] = useState(false)
 
@@ -105,12 +108,46 @@ export function OltListPage() {
     if (!selectedOlt) {
       return
     }
-    await deleteMutation.mutateAsync(selectedOlt.id)
-    toast.success(
-      'Olt Deleted, Success'
-    )
-    setDeleteOpen(false)
-    setSelectedOlt(null)
+    try {
+      await deleteMutation.mutateAsync(selectedOlt.id)
+      toast.success(
+        'Olt Deleted, Success'
+      )
+      setDeleteOpen(false)
+      setSelectedOlt(null)
+    } catch (error: any) {
+      const response = error?.response?.data
+      if (response?.message === 'OLT_HAS_DEPENDENCIES') {
+        const details = response.errors
+        toast.custom(() => (
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                Olt No Delete
+              </CardTitle>
+              <CardDescription>
+                olt ga boleh di hapus ada data terkait nih
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div>
+                <ul>
+                  <li>ONU: {details.onus}</li>
+                  <li>Unauthorize ONU: {details.unauthorizedOnu}</li>
+                  <li>Alarm Log: {details.alarmLogs}</li>
+                  <li>Sylog Event: {details.syslogEvents}</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        ))
+        return
+      }
+      toast.error(
+        response?.message ??
+        'failed delete olt'
+      )
+    }
   }
 
   if (isLoading) {
@@ -132,10 +169,27 @@ export function OltListPage() {
     data.length === 0
   ) {
     return (
-      <EmptyState
-        title="No OLT Found"
-        description="Create your first OLT."
-      />
+      <PageContainer>
+        <EmptyState
+          title="No OLT Found"
+          description="Create your first OLT."
+          action={
+            <Button
+              onClick={() =>
+                setCreateOpen(
+                  true
+                )
+              }
+            >
+              Create OLT
+            </Button>
+          }
+        />
+        <CreateOltDialog
+          open={createOpen}
+          onOpenChange={setCreateOpen}
+        />
+      </PageContainer>
     )
   }
 
@@ -180,6 +234,9 @@ export function OltListPage() {
       />
 
       <OltTable
+        olts={
+          paginatedOlts
+        }
         onConnect={
           (olt) => {
             setSelectedOlt(olt)
@@ -187,8 +244,11 @@ export function OltListPage() {
 
           }
         }
-        olts={
-          paginatedOlts
+        onOptical={
+          (olt) => {
+            setSelectedOlt(olt)
+            setOpticalOpen(true)
+          }
         }
         onView={
           (olt) => {
@@ -242,6 +302,11 @@ export function OltListPage() {
         olt={selectedOlt}
         open={connectOpen}
         onOpenChange={setConnectOpen}
+      />
+      <OltOpticalSheet
+        olt={selectedOlt}
+        open={opticalOpen}
+        onOpenChange={setOpticalOpen}
       />
       <ConfirmDelete
         open={deleteOpen}

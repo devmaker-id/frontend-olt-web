@@ -74,6 +74,7 @@ export function OltConnectSheet({
       <SheetContent
         className="
           sm:max-w-3xl
+          h-full
           overflow-y-auto
         "
       >

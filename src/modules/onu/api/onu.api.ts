@@ -1,15 +1,15 @@
 import { api } from '../../../shared/api/api'
+import type { ApiResponse } from '@/shared/api/types'
+
 import type {
+  UnauthorizedOnu,
   AuthorizeOnuRequest,
 } from '../types/onu.types'
 
 export async function getUnauthorizedOnus() {
-
-  const response =
-    await api.get(
-      '/onu/unregistered'
+  const response = await api.get<ApiResponse<UnauthorizedOnu[]>>(
+      '/onu-unauthorize'
     )
-
   return response.data.data
 }
 
@@ -19,7 +19,7 @@ export async function authorizeOnu(
 
   const response =
     await api.post(
-      '/onu/authorize',
+      '/onu-unauthorize',
       payload
     )
 

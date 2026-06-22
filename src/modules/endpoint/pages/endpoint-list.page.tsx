@@ -3,7 +3,10 @@ import {
   useMemo,
   useState
 } from 'react'
-import { Plus } from 'lucide-react'
+import {
+  Plus,
+  UserSquare
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -144,10 +147,32 @@ export function EndpointListPage() {
     data.length === 0
   ) {
     return (
-      <EmptyState
-        title="No Endpoint Found"
-        description="Customer endpoint management"
-      />
+      <PageContainer>
+        <EmptyState
+          icon={
+            <UserSquare className="text-muted-foreground mb-4 h-12 w-12" />
+          }
+          title="No Endpoint Found"
+          description="Customer endpoint management"
+          action={
+            <Button
+              onClick={() =>
+                setCreateOpen(
+                  true,
+                )
+              }
+            >
+              Create Endpoint
+            </Button>
+          }
+        />
+        <CreateEndpointDialog
+          open={createOpen}
+          onOpenChange={
+            setCreateOpen
+          }
+        />
+      </PageContainer>
     )
   }
 

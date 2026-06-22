@@ -53,7 +53,9 @@ export function EndpointDetailSheet({
 
       <SheetContent
         className="
+          p-3
           sm:max-w-lg
+          overflow-y-auto
         "
       >
 

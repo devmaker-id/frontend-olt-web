@@ -24,6 +24,7 @@ import {
 import {
   useCreateTelegramBot,
 } from '../hooks/use-create-telegram-bot'
+import { toast } from 'sonner'
 
 interface Props {
   open: boolean
@@ -59,20 +60,29 @@ export function CreateTelegramBotDialog({
   async function handleSubmit(
     event: React.FormEvent,
   ) {
-
     event.preventDefault()
 
-    await createMutation.mutateAsync({
-      name,
-      token,
-      defaultChatId,
-    })
+    try {
+      await createMutation.mutateAsync({
+        name,
+        token,
+        defaultChatId,
+      })
+      toast.success(
+        'Created Bot Telegram'
+      )
 
-    setName('')
-    setToken('')
-    setDefaultChatId('')
+      setName('')
+      setToken('')
+      setDefaultChatId('')
 
-    onOpenChange(false)
+      onOpenChange(false)
+    } catch (error: any) {
+      const response = error?.response?.data
+      toast.error(
+        response.message ?? 'Failed Create Bot Telegram'
+      )
+    }
   }
 
   return (

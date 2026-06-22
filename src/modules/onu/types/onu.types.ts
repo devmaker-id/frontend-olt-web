@@ -1,5 +1,5 @@
-// import type { EndpointType } from "@/modules/endpoint/types/endpoint.types"
-import {EndpointType} from '@prisma/client'
+import type { EndpointType } from "@/modules/endpoint/types/endpoint.types"
+
 export interface AuthorizeOnuRequest {
   macAddress: string
   endpoint: {

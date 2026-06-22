@@ -1,12 +1,16 @@
 import { api } from '../../../shared/api/api'
-import type { ReplaceOnuPayload } from '../types/onu-replacement.types'
+import type { ApiResponse } from '@/shared/api/types'
+import type {
+  OnuReplacement,
+  ReplaceOnuPayload,
+} from '../types/onu-replacement.types'
 
 export async function getOnuReplacements() {
-  const response = await api.get('/onu-replacement')
+  const response = await api.get<ApiResponse<OnuReplacement[]>>('/onu-replacement')
   return response.data.data
 }
 export async function getOnuReplacement(id: string) {
-  const response = await api.get(`/onu-replacement/${id}`)
+  const response = await api.get<ApiResponse<OnuReplacement>>(`/onu-replacement/${id}`)
   return response.data.data
 }
 
@@ -15,7 +19,7 @@ export async function replaceOnu(
 ) {
 
   const response =
-    await api.post(
+    await api.post<ApiResponse<ReplaceOnuPayload>>(
       '/onu-replacement',
       payload
     )

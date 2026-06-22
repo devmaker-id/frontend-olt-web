@@ -1,6 +1,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
@@ -42,14 +43,18 @@ export function EndpointOnuSheet({
         <SheetContent
             className="
             sm:max-w-2xl
+            overflow-y-auto
             "
         >
 
             <SheetHeader>
 
             <SheetTitle>
-                ONU Information
+                Endpoint INFO
             </SheetTitle>
+            <SheetDescription>
+                detail information onu
+            </SheetDescription>
 
             </SheetHeader>
 
@@ -62,7 +67,6 @@ export function EndpointOnuSheet({
             <div
                 className="
                 p-2
-                mt-6
                 space-y-4
                 "
             >

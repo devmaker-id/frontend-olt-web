@@ -55,7 +55,9 @@ export function OltDetailSheet({
 
       <SheetContent
         className="
+          p-2
           sm:max-w-3xl
+          h-full
           overflow-y-auto
         "
       >

@@ -104,7 +104,11 @@ export function CreateTelegramUserDialog({
       }
     >
 
-      <DialogContent>
+      <DialogContent className="
+        sm:max-w-3xl
+        max-h-[90vh]
+        overflow-y-auto
+      ">
 
         <DialogHeader>
 
@@ -175,6 +179,7 @@ export function CreateTelegramUserDialog({
                   event.target.value,
                 )
               }
+              placeholder="nama lengkap"
             />
 
           </div>

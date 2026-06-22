@@ -102,6 +102,8 @@ export function EditOltDialog({
       <DialogContent
         className="
           max-w-4xl
+          max-h-[90vh]
+          overflow-y-auto
         "
       >
 

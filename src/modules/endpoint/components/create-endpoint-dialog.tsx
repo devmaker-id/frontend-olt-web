@@ -46,7 +46,13 @@ export function CreateEndpointDialog({
             open={open}
             onOpenChange={onOpenChange}
         >
-            <DialogContent>
+            <DialogContent
+                className="
+                    max-w-4xl
+                    max-h-[90vh]
+                    overflow-y-auto
+                "
+            >
                 <DialogHeader>
                     <DialogTitle>
                         Create Endpoint
