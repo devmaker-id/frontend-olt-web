@@ -32,34 +32,33 @@ export function EndpointOnuCard({
           md:grid-cols-2
         "
       >
-
         <div>
           <p className="text-sm text-muted-foreground">
-            ONU ID
+            ONU MODEL
           </p>
 
           <p>
-            {onu?.onuId ?? '-'}
+            {onu?.model ?? '-'}
           </p>
         </div>
 
         <div>
           <p className="text-sm text-muted-foreground">
-            EPON Port
+            ONU PORT
           </p>
 
           <p>
-            {onu?.eponPort ?? '-'}
+            {onu?.port ?? '-'}
           </p>
         </div>
 
         <div>
           <p className="text-sm text-muted-foreground">
-            MAC Address
+            Signal Status
           </p>
 
           <p>
-            {onu?.onuMac ?? '-'}
+            {onu?.signalStatus ?? '-'}
           </p>
         </div>
 
@@ -69,7 +68,7 @@ export function EndpointOnuCard({
           </p>
 
           <p>
-            {onu?.connectionState ?? '-'}
+            {onu?.status ?? '-'}
           </p>
         </div>
 

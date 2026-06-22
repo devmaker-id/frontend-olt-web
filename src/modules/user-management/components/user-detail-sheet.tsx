@@ -22,19 +22,13 @@ import type {
 } from '../types/user-management.types'
 
 interface Props {
-
   user: User | null
-
   open: boolean
-
   onOpenChange: (
     open: boolean,
   ) => void
-
   onEdit: () => void
-
   onResetPassword: () => void
-
 }
 
 export function UserDetailSheet({
@@ -118,6 +112,19 @@ export function UserDetailSheet({
                 </p>
 
               </div>
+              <div>
+                <p
+                  className="
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+                  Telegram ID
+                </p>
+                <p>
+                  {user.telegramId}
+                </p>
+              </div>
 
               <div>
 
@@ -134,6 +141,46 @@ export function UserDetailSheet({
                   {user.role}
                 </p>
 
+              </div>
+
+              <div>
+                <p
+                  className="
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+                  Email
+                </p>
+                <p>
+                  {user.email}
+                </p>
+              </div>
+              <div>
+                <p
+                  className="
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+                  Telepon
+                </p>
+                <p>
+                  {user.telepon}
+                </p>
+              </div>
+              <div>
+                <p
+                  className="
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+                  Alamat
+                </p>
+                <p>
+                  {user.alamat}
+                </p>
               </div>
 
               <div>

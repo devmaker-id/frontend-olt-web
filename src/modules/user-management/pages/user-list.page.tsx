@@ -71,6 +71,7 @@ import type {
   User,
 } from '../types/user-management.types'
 import { ResetPasswordDialog } from '../components/reset-password-dialog'
+import { toast } from 'sonner'
 
 export function UserListPage() {
 
@@ -150,26 +151,33 @@ export function UserListPage() {
       search,
     ])
 
-  async function
-  handleDelete() {
-
+  async function handleDelete() {
     if (!selectedUser) {
       return
     }
-
-    await deleteMutation
-      .mutateAsync(
+    try {
+      await deleteMutation.mutateAsync(
         selectedUser.id,
       )
+      toast.success(
+        `User ${selectedUser.username} deletet`
+      )
 
-    setDeleteOpen(
-      false,
-    )
-
-    setSelectedUser(
-      null,
-    )
-
+      setDeleteOpen(false)
+      setSelectedUser(null)
+    } catch (error: any) {
+      const data = error?.response?.data
+      if (data.errors === 'LAST_OWNER_CANNOT_BE_DELETED') {
+        toast.error(
+          'Last owner cannot be deleted'
+        )
+        return
+      }
+      toast.error(
+        data.message ??
+        'Failed to delete user'
+      )
+    }
   }
 
   if (isLoading) {

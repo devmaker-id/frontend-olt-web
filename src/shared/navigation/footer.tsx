@@ -13,7 +13,7 @@ export function Footer() {
       "
     >
 
-      NMS © 2026
+      NMS - BIBIT.NET © 2026
 
     </footer>
   )

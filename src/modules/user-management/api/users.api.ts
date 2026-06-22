@@ -1,5 +1,4 @@
-import { api }
-  from '@/shared/api/api'
+import { api } from '@/shared/api/api'
 
 import type {
   User,
@@ -7,54 +6,39 @@ import type {
   UpdateUserDto,
 } from '../types/user-management.types'
 
-interface ApiResponse<T> {
-  success: boolean
-  message: string
-  data: T
-}
+import type { ApiResponse } from '@/shared/api/types'
 
 export async function getUsers() {
-  const result = await api.get<ApiResponse<User[]>>('/users',)
-  
-  const response = result.data
-
-  console.log("users: ", response.data)
-
-  return response.data
+  const response = await api.get<ApiResponse<User[]>>('/users',)
+  return response.data.data
 
 }
 
-export async function
-getUser(
+export async function getUser(
   id: string,
 ) {
-
-  const response =
-    await api.get<User>(
+  const response = await api.get<ApiResponse<User>>(
       `/users/${id}`,
     )
-
-  return response.data
+  return response.data.data
 
 }
 
-export async function
-createUser(
+export async function createUser(
   payload: CreateUserDto,
 ) {
 
-  const response =
-    await api.post(
+  const response = await api.post(
       '/users',
       payload,
     )
+  console.log(response)
 
-  return response.data
+  return response.data.data
 
 }
 
-export async function
-updateUser(
+export async function updateUser(
   id: string,
   payload: UpdateUserDto,
 ) {
@@ -69,8 +53,7 @@ updateUser(
 
 }
 
-export async function
-deleteUser(
+export async function deleteUser(
   id: string,
 ) {
 
@@ -83,8 +66,7 @@ deleteUser(
 
 }
 
-export async function
-resetUserPassword(
+export async function resetUserPassword(
   id: string,
   password: string,
 ) {

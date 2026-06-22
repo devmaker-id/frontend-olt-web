@@ -1,91 +1,89 @@
-import { api } from '../../../shared/api/api'
+import { api } from '@/shared/api/api'
 
 import type {
-  CreateEndpointDto,
-  UpdateEndpointDto
+  ApiResponse,
+  ApiListResponse,
+} from '@/shared/api/types'
+
+import type {
+  Endpoint,
+  EndpointInternetDetail,
+  CreateEndpointRequest,
+  UpdateEndpointRequest,
 } from '../types/endpoint.types'
 
-export async function
-getEndpoints() {
+export async function getEndpoints() {
 
-  const response =
-    await api.get(
-      '/endpoint'
-    )
+  const response = await api.get<
+      ApiListResponse<Endpoint>
+    >('/endpoint')
 
-  return response.data
+  return response.data.data
 }
 
-export async function
-getEndpointById(
-  id: string
-) {
-
-  const response =
-    await api.get(
-      `/endpoint/${id}`
-    )
-
-  return response.data
-}
-
-export async function
-createEndpoint(
-  data: CreateEndpointDto
-) {
-
-  const response =
-    await api.post(
-
-      '/endpoint',
-
-      data
-    )
-
-  return response.data
-}
-
-export async function
-updateEndpoint(
-
+export async function getEndpointById(
   id: string,
-
-  data: UpdateEndpointDto
 ) {
 
-  const response =
-    await api.put(
-
+  const response = await api.get<
+      ApiResponse<Endpoint>
+    >(
       `/endpoint/${id}`,
-
-      data
     )
 
-  return response.data
+  return response.data.data
 }
 
-export async function
-deleteEndpoint(
-  id: string
+export async function createEndpoint(
+  data: CreateEndpointRequest,
 ) {
 
-  const response =
-    await api.delete(
-      `/endpoint/${id}`
+  const response = await api.post<
+      ApiResponse<Endpoint>
+    >(
+      '/endpoint',
+      data,
     )
-
-  return response.data
+  return response.data.data
 }
 
-export async function
-getRealtimeEndpoint(
-  internetNo: string
+export async function updateEndpoint(
+  id: string,
+  data: UpdateEndpointRequest,
 ) {
 
-  const response =
-    await api.get(
-      `/endpoint/internet/${internetNo}`
+  const response = await api.put<
+      ApiResponse<Endpoint>
+    >(
+      `/endpoint/${id}`,
+      data,
     )
 
-  return response.data.result.data
+  return response.data.data
+}
+
+export async function deleteEndpoint(
+  id: string,
+) {
+
+  const response = await api.delete<
+      ApiResponse<Endpoint>
+    >(
+      `/endpoint/${id}`,
+    )
+
+  return response.data.data
+}
+
+export async function getRealtimeEndpoint(
+  internetNo: string,
+) {
+
+  const response = await api.get<
+      ApiResponse<EndpointInternetDetail>
+    >(
+      `/endpoint/internet/${internetNo}`,
+    )
+
+  return response.data.data
 }

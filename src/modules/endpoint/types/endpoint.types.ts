@@ -1,91 +1,100 @@
-// export interface Endpoint {
-//   id: string
-//   internetNo: string
-//   name: string
-//   address: string
+export const ENDPOINT_TYPES = [
+  'CUSTOMER',
+  'RESELLER',
+  'POP',
+  'BACKHAUL',
+] as const
 
-//   onus: {
-//     id: string
-//     connectionState: string
-//     rxPower: string | null
-//   }[]
-// }
-
-export type EndpointType =
-  | 'CUSTOMER'
-  | 'RESELLER'
-  | 'POP'
-  | 'BACKHAUL'
+export type EndpointType = typeof ENDPOINT_TYPES[number]
 
 export interface Endpoint {
-
   id: string
-
   internetNo: string
-
   type: EndpointType
-
   name: string
-
-  code?: string
-
-  address?: string
-
-  latitude?: number
-
-  longitude?: number
-
-  description?: string
-
+  email: string
+  telepon: string | null
+  address: string | null
+  latitude: number | null
+  longitude: number | null
+  description: string | null
+  packageId: string | null
   createdAt: string
+  updatedAt: string
+  onus?: EndpointOnu[]
+  package?: EndpointPackage | null
+}
 
+export interface EndpointPackage {
+  id: string
+  type: string
+  name: string
+  speed: string
+  price: number
+  normalDevice: string
+  createdAt: string
   updatedAt: string
 }
 
-export interface CreateEndpointDto {
+export interface EndpointOnu {
+  id: string
+}
 
+export interface CreateEndpointRequest {
   internetNo: string
-
   type: EndpointType
-
   name: string
-
-  code?: string
-
+  email: string
+  telepon?: string
   address?: string
-
   latitude?: number
-
   longitude?: number
-
   description?: string
 }
 
-export interface UpdateEndpointDto {
-
-  type?: EndpointType
-
-  name?: string
-
-  code?: string
-
+export interface UpdateEndpointRequest {
+  type: EndpointType
+  name: string
+  email: string
+  telepon?: string
   address?: string
-
   latitude?: number
-
   longitude?: number
-
   description?: string
+  packageId?: string
 }
 
-export interface UpdateEndpointMutationDto {
-
+export interface UpdateEndpointMutationRequest {
   id: string
-
-  data: UpdateEndpointDto
+  data: UpdateEndpointRequest
 }
 
-export interface DeleteEndpointMutationDto {
-
+export interface EndpointRealtimeOnu {
   id: string
+  olt: {
+    id: string
+    name: string
+  }
+  port: string
+  name: string
+  status: string
+  signalStatus: string
+  model: string
+  rxPower: string
+  txPower: string
+  temperature: string
+  offlineCount: string
+  firstUptime: string
+  lastOfftime: string
+}
+
+export interface EndpointInternetDetail {
+  internetNo: string
+  name: string
+  type: EndpointType
+  address: string | null
+  description: string | null
+  package: EndpointPackage | null
+  onuCount?: number
+  onus: EndpointRealtimeOnu[]
 }

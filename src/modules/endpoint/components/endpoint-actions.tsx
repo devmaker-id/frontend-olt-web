@@ -1,33 +1,24 @@
 import {
   Eye,
-  Pen
+  Pen,
+  Trash2,
+  Router
 } from 'lucide-react'
 
-import {
-  Link
-} from 'react-router-dom'
-
-import {
-  Button
-} from '@/components/ui/button'
-
-import {
-  EndpointDeleteButton
-} from './endpoint-delete-button'
+import { Button } from '@/components/ui/button'
 
 interface Props {
-
-  endpointId: string
-
-  endpointName: string
+  onView: () => void
+  onOnu: () => void
+  onEdit: () => void
+  onDelete: () => void
 }
 
 export function EndpointActions({
-
-  endpointId,
-
-  endpointName
-
+  onView,
+  onOnu,
+  onEdit,
+  onDelete
 }: Props) {
 
   return (
@@ -41,58 +32,36 @@ export function EndpointActions({
     >
 
       <Button
-        asChild
         size="icon"
         variant="outline"
+        onClick={onView}
       >
-
-        <Link
-          to={`/endpoints/${endpointId}`}
-        >
-
-          <Eye
-            className="
-              h-4
-              w-4
-            "
-          />
-
-        </Link>
-
+        <Eye className="h-4 w-4" />
       </Button>
 
       <Button
-        asChild
         size="icon"
         variant="outline"
+        onClick={onOnu}
       >
-
-        <Link
-          to={`/endpoints/${endpointId}/edit`}
-        >
-
-          <Pen
-            className="
-              h-4
-              w-4
-            "
-          />
-
-        </Link>
-
+        <Router className="h-4 w-4" />
       </Button>
 
-      <EndpointDeleteButton
+      <Button
+        size="icon"
+        variant="outline"
+        onClick={onEdit}
+      >
+        <Pen className="h-4 w-4" />
+      </Button>
 
-        endpointId={
-          endpointId
-        }
-
-        endpointName={
-          endpointName
-        }
-
-      />
+      <Button
+        size="icon"
+        variant="destructive"
+        onClick={onDelete}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
 
     </div>
   )

@@ -3,19 +3,8 @@ import {
   useMemo,
   useState
 } from 'react'
-
-import {
-  Link
-} from 'react-router-dom'
-
-import {
-  Plus
-} from 'lucide-react'
-
-import {
-  Button
-} from '@/components/ui/button'
-
+import { Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -23,50 +12,24 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-
-import {
-  LoadingState
-} from '@/shared/components/loading-state'
-
-import {
-  ErrorState
-} from '@/shared/components/error-state'
-
-import {
-  EmptyState
-} from '@/shared/components/empty-state'
-
-import {
-  PageContainer
-} from '@/shared/components/page-container'
-
-import {
-  PageHeader
-} from '@/shared/components/page-header'
-
-import {
-  DataTableToolbar
-} from '@/shared/components/data-table-toolbar'
-
-import {
-  SearchInput
-} from '@/shared/components/data-table/search-input'
-
-import {
-  DataTablePagination
-} from '@/shared/components/data-table/data-table-pagination'
-
-import {
-  EndpointTable
-} from '../components/endpoint-table'
-
-import {
-  useEndpoints
-} from '../hooks/use-endpoints'
-
-import type {
-  Endpoint
-} from '../types/endpoint.types'
+import { LoadingState } from '@/shared/components/loading-state'
+import { ErrorState } from '@/shared/components/error-state'
+import { EmptyState } from '@/shared/components/empty-state'
+import { PageContainer } from '@/shared/components/page-container'
+import { PageHeader } from '@/shared/components/page-header'
+import { DataTableToolbar } from '@/shared/components/data-table-toolbar'
+import { SearchInput } from '@/shared/components/data-table/search-input'
+import { DataTablePagination } from '@/shared/components/data-table/data-table-pagination'
+import { EndpointTable } from '../components/endpoint-table'
+import { useEndpoints } from '../hooks/use-endpoints'
+import type { Endpoint } from '../types/endpoint.types'
+import { CreateEndpointDialog } from '../components/create-endpoint-dialog'
+import { useDeleteEndpoint } from '../hooks/use-delete-endpoint'
+import { toast } from 'sonner'
+import { EditEndpointDialog } from '../components/edit-endpoint-dialog'
+import { EndpointDetailSheet } from '../components/endpoint-detail-sheet'
+import { ConfirmDelete } from '@/shared/components/confirm-delete'
+import { EndpointOnuSheet } from '../components/endpoint-onu-sheet'
 
 export function EndpointListPage() {
 
@@ -76,93 +39,89 @@ export function EndpointListPage() {
     error
   } = useEndpoints()
 
-  const [search, setSearch] =
-    useState('')
+  const [onuOpen, setOnuOpen] = useState(false)
 
-  const [page, setPage] =
-    useState(1)
+  const [search, setSearch] = useState('')
+  const [createOpen, setCreateOpen] = useState(false)
+  
+  const [selectedEndpoint, setSelectedEndpoint] = useState<Endpoint | null>(
+    null,
+  )
+  const [editOpen, setEditOpen] = useState(false)
+  const [detailOpen, setDetailOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
-  const [perPage, setPerPage] =
-    useState(10)
+  const [page, setPage] = useState(1)
+  const [perPage, setPerPage] = useState(10)
+
+  const deleteMutation = useDeleteEndpoint()
+  async function handleDelete() {
+    if(!selectedEndpoint) {
+      return
+    }
+    await deleteMutation.mutateAsync(
+      selectedEndpoint.id
+    )
+    toast.success(
+      'Endpoint deleted'
+    )
+    setDeleteOpen(false)
+    setSelectedEndpoint(null)
+  }
 
   useEffect(() => {
-
     setPage(1)
-
   }, [search])
-
-  const filteredData =
-    useMemo(() => {
-
+  const filteredData = useMemo(() => {
       const keyword =
         search
           .trim()
           .toLowerCase()
-
       if (!keyword) {
         return data
       }
-
       return data.filter(
         (
           endpoint: Endpoint
         ) =>
-
           endpoint.internetNo
             ?.toLowerCase()
             .includes(keyword)
-
           ||
-
           endpoint.name
             ?.toLowerCase()
             .includes(keyword)
-
           ||
-
           endpoint.address
             ?.toLowerCase()
             .includes(keyword)
       )
-
     }, [
       data,
       search
     ])
-
-  const totalPages =
-    Math.max(
-
+  const totalPages = Math.max(
       1,
-
       Math.ceil(
         filteredData.length /
         perPage
       )
     )
 
-  const paginatedData =
-    useMemo(() => {
-
+  const paginatedData = useMemo(() => {
       const start =
         (page - 1) *
         perPage
-
       const end =
         start +
         perPage
-
       return filteredData.slice(
         start,
         end
       )
-
     }, [
-
       filteredData,
-
       page,
-
       perPage
     ])
 
@@ -224,39 +183,22 @@ export function EndpointListPage() {
           >
 
             <Button
-              asChild
+              onClick={() =>
+                setCreateOpen(true)
+              }
             >
-
-              <Link
-                to="/endpoints/create"
-              >
-
-                <Plus
-                  className="
-                    mr-2
-                    h-4
-                    w-4
-                  "
-                />
-
-                Create Endpoint
-
-              </Link>
-
+              <Plus className="mr-2 h-4 w-4" />
+              Create Endpoint
             </Button>
 
             <Select
-
               value={String(perPage)}
-
               onValueChange={(
                 value
               ) => {
-
                 setPerPage(
                   Number(value)
                 )
-
                 setPage(1)
               }}
             >
@@ -307,18 +249,95 @@ export function EndpointListPage() {
 
       <EndpointTable
         data={paginatedData}
+        onView={endpoint => {
+          setSelectedEndpoint(
+            endpoint
+          )
+          setDetailOpen(true)
+        }}
+        onOnu={endpoint => {
+          setSelectedEndpoint(
+            endpoint
+          )
+          setOnuOpen(true)
+        }}
+        onEdit={endpoint => {
+          setSelectedEndpoint(
+            endpoint
+          )
+          setEditOpen(true)
+        }}
+        onDelete={endpoint => {
+          setSelectedEndpoint(
+            endpoint
+          )
+          setDeleteOpen(true)
+        }}
       />
 
       <DataTablePagination
-
         page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
 
-        totalPages={
-          totalPages
+      <CreateEndpointDialog
+        open={createOpen}
+        onOpenChange={
+          setCreateOpen
         }
-
-        onPageChange={
-          setPage
+      />
+      <EditEndpointDialog
+        endpoint={
+          selectedEndpoint
+        }
+        open={editOpen}
+        onOpenChange={
+          setEditOpen
+        }
+      />
+      <EndpointDetailSheet
+        endpoint={
+          selectedEndpoint
+        }
+        open={detailOpen}
+        onOpenChange={
+          setDetailOpen
+        }
+        onEdit={() => {
+          setDetailOpen(
+            false,
+          )
+          setEditOpen(
+            true,
+          )
+        }}
+      />
+      <EndpointOnuSheet
+        endpoint={
+          selectedEndpoint
+        }
+        open={
+          onuOpen
+        }
+        onOpenChange={
+          setOnuOpen
+        }
+      />
+      <ConfirmDelete
+        open={deleteOpen}
+        onOpenChange={
+          setDeleteOpen
+        }
+        title="Delete Endpoint"
+        description={
+          `Delete endpoint "${selectedEndpoint?.name}"?`
+        }
+        onConfirm={
+          handleDelete
+        }
+        isLoading={
+          deleteMutation.isPending
         }
       />
 

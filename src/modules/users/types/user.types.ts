@@ -3,17 +3,17 @@ export type UserRole =
   | 'TEKNISI'
 
 export interface User {
-  data: {
-    id: string
-
+  id: string
   username: string
-
   role: UserRole
 
-  createdAt: string
+  email: string
+  telepon: string
+  alamat: string
+  telegramId: string
 
+  createdAt: string
   updatedAt: string
-  }
 }
 
 export interface ChangePasswordDto {

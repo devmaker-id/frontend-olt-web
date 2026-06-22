@@ -46,11 +46,8 @@ import type {
 } from '../types/user-management.types'
 
 interface Props {
-
   user: User | null
-
   open: boolean
-
   onOpenChange: (
     open: boolean,
   ) => void
@@ -62,35 +59,32 @@ export function EditUserDialog({
   open,
   onOpenChange,
 }: Props) {
-
-  const mutation =
-    useUpdateUser()
-
+  const mutation = useUpdateUser()
   const [
     username,
     setUsername,
   ] = useState('')
-
   const [
     role,
     setRole,
   ] = useState<UserRole>(
     'TEKNISI',
   )
+  const [email, setEmail] = useState('')
+  const [telepon, setTelepon] = useState('')
+  const [alamat, setAlamat] = useState('')
+  const [telegramId, setTelegramId] = useState('')
 
   useEffect(() => {
-
     if (!user) {
       return
     }
-
-    setUsername(
-      user.username,
-    )
-
-    setRole(
-      user.role,
-    )
+    setUsername(user.username)
+    setRole(user.role)
+    setEmail(user.email)
+    setTelepon(user.telepon)
+    setAlamat(user.alamat)
+    setTelegramId(user.telegramId)
 
   }, [user])
 
@@ -106,17 +100,15 @@ export function EditUserDialog({
 
     try {
 
-      await mutation
-        .mutateAsync({
-
+      await mutation.mutateAsync({
           id: user.id,
-
           data: {
-
             username,
-
             role,
-
+            email,
+            telepon,
+            alamat,
+            telegramId,
           },
 
         })
@@ -134,14 +126,9 @@ export function EditUserDialog({
     catch (
       error: any
     ) {
-
       toast.error(
-
-        error?.response
-          ?.data?.message ??
-
+        error?.response?.data?.message ??
         'Failed to update user',
-
       )
 
     }
@@ -227,7 +214,7 @@ export function EditUserDialog({
               }
             >
 
-              <SelectTrigger>
+              <SelectTrigger className='w-full' >
 
                 <SelectValue />
 
@@ -251,6 +238,50 @@ export function EditUserDialog({
 
             </Select>
 
+          </div>
+
+          <div
+          className='space-y-2'
+          >
+            <Label>E-Mail</Label>
+            <Input value={email} onChange={event =>
+                setEmail(
+                  event.target.value,
+                )
+              }
+            />
+          </div>
+
+          <div
+          className='space-y-2'
+          >
+            <Label>Telepon</Label>
+            <Input value={telepon} onChange={event =>
+                setTelepon(
+                  event.target.value,
+                )
+              }
+            />
+          </div>
+
+          <div className='space-y-2'>
+            <Label>Alamat</Label>
+            <Input value={alamat} onChange={event =>
+                setAlamat(
+                  event.target.value,
+                )
+              }
+            />
+          </div>
+
+          <div className='space-y-2'>
+            <Label>Telegram ID</Label>
+            <Input value={telegramId} onChange={event =>
+                setTelegramId(
+                  event.target.value,
+                )
+              }
+            />
           </div>
 
           <DialogFooter>

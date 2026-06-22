@@ -7,15 +7,14 @@ import type {
   ChangePasswordDto,
 } from '../types/user.types'
 
-export async function
-getCurrentUser() {
+export async function getCurrentUser() {
 
   const response =
     await api.get<User>(
       '/users/me',
     )
 
-  return response.data.data
+  return response.data
 }
 
 export async function

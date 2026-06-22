@@ -1,17 +1,10 @@
 import {
-
   Table,
-
   TableBody,
-
   TableCell,
-
   TableHead,
-
   TableHeader,
-
   TableRow
-
 } from '@/components/ui/table'
 
 import {
@@ -21,13 +14,34 @@ import {
 import {
   EndpointStatusBadge
 } from './endpoint-status-badge'
+import type { Endpoint } from '../types/endpoint.types'
 
 interface Props {
-  data: any[]
+  data: Endpoint[]
+
+  onView: (
+    endpoint: Endpoint
+  ) => void
+
+  onOnu: (
+    endpoint: Endpoint
+  ) => void
+
+  onEdit: (
+    endpoint: Endpoint
+  ) => void
+
+  onDelete: (
+    endpoint: Endpoint
+  ) => void
 }
 
 export function EndpointTable({
-  data
+  data,
+  onView,
+  onOnu,
+  onEdit,
+  onDelete,
 }: Props) {
 
   return (
@@ -51,10 +65,6 @@ export function EndpointTable({
 
             <TableHead>
               Name
-            </TableHead>
-
-            <TableHead>
-              Address
             </TableHead>
 
             <TableHead>
@@ -127,14 +137,6 @@ export function EndpointTable({
 
                     <TableCell>
 
-                      {
-                        endpoint.address
-                      }
-
-                    </TableCell>
-
-                    <TableCell>
-
                       <EndpointStatusBadge
 
                         status={
@@ -159,12 +161,25 @@ export function EndpointTable({
 
                       <EndpointActions
 
-                        endpointId={
-                            endpoint.id
+                        onView={() => 
+                          onView(
+                            endpoint
+                          )
                         }
-
-                        endpointName={
-                            endpoint.name
+                        onOnu={() =>
+                          onOnu(
+                            endpoint
+                          )
+                        }
+                        onEdit={() =>
+                          onEdit(
+                            endpoint
+                          )
+                        }
+                        onDelete={() => 
+                          onDelete(
+                            endpoint
+                          )
                         }
 
                       />

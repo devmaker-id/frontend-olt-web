@@ -3,33 +3,18 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import {
-  deleteUser,
-} from '../api/users.api'
+import { deleteUser } from '../api/users.api'
 
 export function useDeleteUser() {
-
-  const queryClient =
-    useQueryClient()
-
+  const queryClient = useQueryClient()
   return useMutation({
-
-    mutationFn:
-      deleteUser,
-
+    mutationFn: deleteUser,
     onSuccess() {
-
-      queryClient
-        .invalidateQueries({
-
+      queryClient.invalidateQueries({
           queryKey: [
             'users',
           ],
-
         })
-
     },
-
   })
-
 }

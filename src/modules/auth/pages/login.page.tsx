@@ -153,7 +153,7 @@ export function LoginPage() {
           </div>
 
           <CardTitle>
-            Backend OLT
+            NMS - BIBIT.NET
           </CardTitle>
 
           <CardDescription>

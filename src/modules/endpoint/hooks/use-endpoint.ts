@@ -5,8 +5,7 @@ import {
   getEndpointById
 } from '../api/endpoint.api'
 
-export function
-useEndpoint(
+export function useEndpoint(
   id: string
 ) {
 
