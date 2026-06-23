@@ -36,13 +36,9 @@ interface Props {
 }
 
 export function EditOltDialog({
-
   olt,
-
   open,
-
   onOpenChange,
-
 }: Props) {
 
   const updateMutation =
@@ -54,10 +50,10 @@ export function EditOltDialog({
 
   async function handleSubmit(
     data: UpdateOltRequest,
-  ) {
+  ): Promise<void> {
 
     try {
-      if(!olt) return null
+      if(!olt) return
       await updateMutation.mutateAsync({
           id: olt.id,
           data,
@@ -116,23 +112,16 @@ export function EditOltDialog({
         </DialogHeader>
 
         <OltForm
-
           initialValues={
             olt
           }
-
           onSubmit={
             handleSubmit
           }
-
           isLoading={
             updateMutation.isPending
           }
-
-          submitLabel="
-            Update OLT
-          "
-
+          submitLabel="Update OLT"
         />
 
       </DialogContent>
