@@ -1,5 +1,5 @@
-import { api }
-  from '@/shared/api/api'
+import { api } from '@/shared/api/api'
+import type { ApiResponse } from '@/shared/api/types'
 
 import type {
   User,
@@ -9,21 +9,18 @@ import type {
 
 export async function getCurrentUser() {
 
-  const response =
-    await api.get<User>(
+  const response = await api.get<ApiResponse<User>>(
       '/users/me',
     )
 
-  return response.data
+  return response.data.data
 }
 
-export async function
-updateProfile(
+export async function updateProfile(
   payload: UpdateProfileDto,
 ) {
 
-  const response =
-    await api.patch(
+  const response = await api.patch(
       '/users/me',
       payload,
     )
@@ -31,13 +28,11 @@ updateProfile(
   return response.data
 }
 
-export async function
-changePassword(
+export async function changePassword(
   payload: ChangePasswordDto,
 ) {
 
-  const response =
-    await api.patch(
+  const response = await api.patch(
       '/users/password',
       payload,
     )
