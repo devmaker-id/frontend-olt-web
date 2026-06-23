@@ -42,8 +42,9 @@ export function EditEndpointDialog({
         data: UpdateEndpointRequest
     ) {
         try {
+            if(!endpoint) return null
             await updateMutation.mutateAsync({
-                id: endpoint?.id,
+                id: endpoint.id,
                 data
             })
             toast.success(
