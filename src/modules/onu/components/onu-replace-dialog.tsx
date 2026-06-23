@@ -3,7 +3,7 @@ import {
   useState,
 } from 'react'
 import { useReplaceOnu } from '../hooks/use-replace-onu'
-
+import { getUser } from '@/shared/utils/auth'
 import {
   Dialog,
   DialogContent,
@@ -55,12 +55,12 @@ export function OnuReplaceDialog({
     if(!onu) {
         return
     }
-    const user = JSON.parse(localStorage.getItem('user')??'{}')
+    const user = getUser()
     await replaceMutation.mutateAsync({
         endpointId: onu.endpointId,
         unauthorizedOnuId,
         reason,
-        replacedBy: user.username
+        replacedBy: user.username ?? 'system'
     })
     onOpenChange(false)
   }
