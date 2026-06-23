@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom'
+import { getUser } from '../utils/auth'
 import {
   sidebarConfig
 } from './sidebar-config'
@@ -8,8 +9,8 @@ import {
 } from './sidebar-section'
 
 export function SidebarContent() {
-  const storedUser = localStorage.getItem('user')
-  if (!storedUser) {
+  const user = getUser()
+  if (!user) {
     return (
       <Navigate
         to="/login"
@@ -17,9 +18,6 @@ export function SidebarContent() {
       />
     )
   }
-  const user = JSON.parse(
-    storedUser
-  )
   const filteredSections = sidebarConfig.filter(
     section => {
       if (!section.roles) {

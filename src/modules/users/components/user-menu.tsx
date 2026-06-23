@@ -2,6 +2,7 @@ import {
   Link,
   useNavigate,
 } from 'react-router-dom'
+import { getUser } from '@/shared/utils/auth'
 
 import {
   LogOut,
@@ -36,12 +37,7 @@ export function UserMenu() {
 
     }
 
-  const user =
-    JSON.parse(
-      localStorage.getItem(
-        'user',
-      ) ?? '{}',
-    )
+  const user = getUser()
 
   return (
 
