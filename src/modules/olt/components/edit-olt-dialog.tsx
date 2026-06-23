@@ -57,14 +57,10 @@ export function EditOltDialog({
   ) {
 
     try {
-
-      await updateMutation
-        .mutateAsync({
-
-          id: olt?.id,
-
+      if(!olt) return null
+      await updateMutation.mutateAsync({
+          id: olt.id,
           data,
-
         })
 
       toast.success(
