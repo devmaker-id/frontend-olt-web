@@ -38,7 +38,7 @@ export function OnuListPage() {
 
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
-  const [perPage, setPerPage] = useState(10)
+  const [perPage] = useState(10)
 
   useEffect(() => { setPage(1) }, [search])
 

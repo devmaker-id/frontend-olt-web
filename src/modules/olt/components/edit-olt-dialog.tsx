@@ -61,7 +61,7 @@ export function EditOltDialog({
       await updateMutation
         .mutateAsync({
 
-          id: olt.id,
+          id: olt?.id,
 
           data,
 

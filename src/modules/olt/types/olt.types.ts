@@ -1,7 +1,11 @@
 export type OltPlatform =
   | 'HIOSO'
+  | 'VSOL'
 export type OltConnectionType =
   | 'TELNET'
+  | 'SSH'
+  | 'API'
+  | 'SNMP'
 
 export interface Olt {
   id: string

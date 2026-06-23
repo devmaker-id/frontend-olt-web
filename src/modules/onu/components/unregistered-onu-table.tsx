@@ -139,7 +139,7 @@ export function UnregisteredOnuTable({
                   </TableCell>
 
                   <TableCell>
-                    {onu.eponPort}
+                    {onu.portId}
                   </TableCell>
 
                   <TableCell>

@@ -1,10 +1,4 @@
 import { useState } from 'react'
-
-import type {
-  OltPlatform,
-  OltConnectionType,
-} from '@prisma/client'
-
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
@@ -16,7 +10,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import type { Olt } from '../types/olt.types'
+import type {
+  Olt,
+  OltPlatform,
+  OltConnectionType
+ } from '../types/olt.types'
 
 interface OltFormData {
   name: string

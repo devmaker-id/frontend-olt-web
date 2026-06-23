@@ -7,10 +7,6 @@ import {
   createTelegramBot,
 } from '../api/telegram-bot.api'
 
-import {
-  appToast,
-} from '@/shared/lib/toast'
-
 export function useCreateTelegramBot() {
   const queryClient = useQueryClient()
 

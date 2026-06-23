@@ -36,7 +36,7 @@ export function OltDetailSheet({
 
   onOpenChange,
 
-  onEdit,
+  // onEdit,
 
 }: Props) {
 

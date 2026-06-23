@@ -52,7 +52,7 @@ export function UnregisteredOnuCard({
 
           {' '}
 
-          {onu.eponPort}
+          {onu.portId}
 
         </div>
 
