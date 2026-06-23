@@ -1,14 +1,11 @@
-import {
-  Button,
-} from '@/components/ui/button'
-
+import { Eye } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-
 import {
   Table,
   TableBody,
@@ -17,16 +14,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-import type {
-  OnuReplacement,
-} from '../types/onu-replacement.types'
+import type { OnuReplacement } from '../types/onu-replacement.types'
 
 interface Props {
   replacements: OnuReplacement[]
-
   isLoading: boolean
-
   onView: (
     replacement: OnuReplacement
   ) => void
@@ -166,8 +158,7 @@ export function OnuReplacementTable({
                   <TableCell>
 
                     {
-                      replacement.oldOnu
-                        .onuMac
+                      replacement.oldOnu.onuMac
                     }
 
                   </TableCell>
@@ -175,8 +166,7 @@ export function OnuReplacementTable({
                   <TableCell>
 
                     {
-                      replacement.newOnu
-                        .onuMac
+                      replacement.newOnu.onuMac
                     }
 
                   </TableCell>
@@ -201,22 +191,15 @@ export function OnuReplacementTable({
                         )
                       }
                     >
-                      View
+                      <Eye className="h-4 w-4" />
                     </Button>
-
                   </TableCell>
-
                 </TableRow>
-
               ),
             )}
-
           </TableBody>
-
         </Table>
-
       </CardContent>
-
     </Card>
   )
 }

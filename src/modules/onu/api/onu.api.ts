@@ -5,6 +5,7 @@ import type {
   Onu,
   UnauthorizedOnu,
   AuthorizeOnuRequest,
+  ReplaceOnuRequest,
 } from '../types/onu.types'
 
 // AUTHORIZE ONU
@@ -50,4 +51,14 @@ export async function getRealtimeOnu(
 
   return response.data.data
 
+}
+
+export async function replaceOnu(
+  payload: ReplaceOnuRequest,
+) {
+  const response = await api.post(
+      '/onu-replacement',
+      payload,
+    )
+  return response.data
 }

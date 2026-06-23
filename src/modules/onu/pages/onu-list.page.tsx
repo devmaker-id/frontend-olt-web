@@ -16,6 +16,7 @@ import { OnuTable } from '../components/onu-table'
 import type { Onu } from '../types/onu.types'
 import { OnuDetailSheet } from '../components/onu-detail-sheet'
 import { OnuRealtimeSheet } from '../components/onu-realtime-sheet'
+import { OnuReplaceDialog } from '../components/onu-replace-dialog'
 
 export function OnuListPage() {
 
@@ -28,29 +29,20 @@ export function OnuListPage() {
   const [selectedOnu, setSelectedOnu] = useState<Onu | null>(null)
   const [detailOpen, setDetailOpen] = useState(false)
   const [realtimeOpen, setRealtimeOpen] = useState(false)
+  const [replaceOpen, setReplaceOpen] = useState(false)
 
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
 
-  useEffect(() => {
-
-    setPage(1)
-
-  }, [search])
+  useEffect(() => { setPage(1) }, [search])
 
   const filteredData =
     useMemo(() => {
-
-      const keyword =
-        search
-          .trim()
-          .toLowerCase()
-
+      const keyword = search.trim().toLowerCase()
       if (!keyword) {
         return data
       }
-
       return data.filter(
         (onu: Onu) =>
 
@@ -178,6 +170,12 @@ export function OnuListPage() {
             setRealtimeOpen(true)
           }
         }
+        onReplace={
+          onu => {
+            setSelectedOnu(onu)
+            setReplaceOpen(true)
+          }
+        }
         onDelete={
           onu => {
               console.log(
@@ -190,14 +188,9 @@ export function OnuListPage() {
 
       <DataTablePagination
         page={page}
-        totalPages={
-          totalPages
-        }
-        onPageChange={
-          setPage
-        }
+        totalPages={totalPages}
+        onPageChange={setPage}
       />
-
       <OnuDetailSheet
         onu={selectedOnu}
         open={detailOpen}
@@ -208,13 +201,22 @@ export function OnuListPage() {
           }
         }}
       />
-
       <OnuRealtimeSheet
         onu={selectedOnu}
         open={realtimeOpen}
         onOpenChange={open => {
           setRealtimeOpen(open)
           if(!open){
+            setSelectedOnu(null)
+          }
+        }}
+      />
+      <OnuReplaceDialog
+        onu={selectedOnu}
+        open={replaceOpen}
+        onOpenChange={open => {
+          setReplaceOpen(open)
+          if (!open) {
             setSelectedOnu(null)
           }
         }}

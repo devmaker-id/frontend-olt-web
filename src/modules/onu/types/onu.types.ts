@@ -76,3 +76,9 @@ export interface RealtimeOnu {
     rxpower: string
   }
 }
+
+export interface ReplaceOnuRequest {
+  endpointId: string
+  unauthorizedOnuId: string
+  reason?: string
+}

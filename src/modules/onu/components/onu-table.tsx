@@ -14,6 +14,7 @@ interface Props {
   data: Onu[]
   onView?: (onu: Onu) => void
   onRealtime?: (onu: Onu) => void
+  onReplace?: (onu: Onu) => void
   onDelete?: (onu: Onu) => void
 }
 
@@ -21,6 +22,7 @@ export function OnuTable({
   data,
   onView,
   onRealtime,
+  onReplace,
   onDelete,
 }: Props) {
 
@@ -157,6 +159,7 @@ export function OnuTable({
                     <OnuActions
                       onView={() => onView?.(onu) }
                       onRealtime={() => onRealtime?.(onu) }
+                      onReplace={() => onReplace?.(onu) }
                       onDelete={() => onDelete?.(onu) }
                     />
 
