@@ -1,113 +1,107 @@
 import {
-
-  Wifi,
-
+  Activity,
   CheckCircle2,
-
   AlertTriangle,
-
-  Activity
-
+  Wifi,
+  WifiOff,
+  Power,
+  ShieldAlert,
+  HelpCircle,
 } from 'lucide-react'
-
 import {
-  useSummary
+  useNavigate,
+} from 'react-router-dom'
+import {
+  useSummary,
 } from '../hooks/use-summary'
-
 import {
-  SummaryCard
+  SummaryCard,
 } from '@/shared/components/summary-card'
-
 import {
-  LoadingState
+  LoadingState,
 } from '@/shared/components/loading-state'
-
 import {
-  ErrorState
+  ErrorState,
 } from '@/shared/components/error-state'
-
 import {
-  PageContainer
+  PageContainer,
 } from '@/shared/components/page-container'
-
 import {
-  PageHeader
+  PageHeader,
 } from '@/shared/components/page-header'
-import { useNavigate } from 'react-router-dom'
 
 export function DashboardPage() {
-
   const {
     data,
     isLoading,
-    error
+    error,
   } = useSummary()
-  const navigate = useNavigate()
-
+  const navigate =
+    useNavigate()
   if (isLoading) {
     return (
       <LoadingState />
     )
   }
-
-  if (error || !data) {
+  if (
+    error ||
+    !data
+  ) {
     return (
       <ErrorState
-        message="Failed to load dashboard summary."
+        message="
+          Failed to load dashboard summary.
+        "
       />
     )
   }
-
   return (
-
     <PageContainer>
-
       <PageHeader
-
         title="Dashboard"
-
-        description="Network Overview"
-
+        description="
+          Network Overview
+        "
       />
-
       <div
         className="
           grid
           gap-4
           sm:grid-cols-2
-          xl:grid-cols-5
+          md:grid-cols-4
+          xl:grid-cols-4
         "
       >
-
         <SummaryCard
-
           title="Total ONU"
-
-          value={data.total}
-
-          description="Registered + Unregistered"
-
+          value={
+            data.total
+          }
+          description="
+            Registered + Unregistered
+          "
           icon={
             <Activity
               className="
-                h-5
-                w-5
-                text-muted-foreground
+                h-8
+                w-8
               "
             />
           }
-
         />
-
         <SummaryCard
-
           title="Registered"
+          value={
+            data.registered
+          }
+          description="
+            Registered ONU
+          "
           onClick={() =>
             navigate(
-              '/onu'
+              '/onu',
             )
           }
-          value={data.registered}
           icon={
             <CheckCircle2
               className="
@@ -117,19 +111,19 @@ export function DashboardPage() {
             />
           }
         />
-
         <SummaryCard
-
           title="Unregistered"
-
-          value={data.unregistered}
-
+          value={
+            data.unregistered
+          }
+          description="
+            Unauthorized ONU
+          "
           onClick={() =>
             navigate(
-              '/onu/unregistered'
+              '/onu/unregistered',
             )
           }
-
           icon={
             <AlertTriangle
               className="
@@ -138,15 +132,20 @@ export function DashboardPage() {
               "
             />
           }
-
         />
-
         <SummaryCard
-
           title="Online"
-
-          value={data.online}
-
+          value={
+            data.online
+          }
+          description="
+            ONU Online
+          "
+          onClick={() =>
+            navigate(
+              '/onu?status=ONLINE',
+            )
+          }
           icon={
             <Wifi
               className="
@@ -156,15 +155,21 @@ export function DashboardPage() {
             />
           }
         />
-
         <SummaryCard
-
-          title="Fiber LOS"
-
-          value={data.fiberLos}
-
+          title="Offline"
+          value={
+            data.offline
+          }
+          description="
+            ONU disconnected from OLT
+          "
+          onClick={() =>
+            navigate(
+              '/onu?status=OFFLINE',
+            )
+          }
           icon={
-            <AlertTriangle
+            <WifiOff
               className="
                 h-8
                 w-8
@@ -172,9 +177,68 @@ export function DashboardPage() {
             />
           }
         />
-
+        <SummaryCard
+          title="Power Off"
+          value={
+            data.powerOff
+          }
+          description="
+            ONU power disconnected
+          "
+          onClick={() =>
+            navigate(
+              '/onu?status=ONU_POWER_OFF',
+            )
+          }
+          icon={
+            <Power
+              className="
+                h-8
+                w-8
+              "
+            />
+          }
+        />
+        <SummaryCard
+          title="Fiber LOS"
+          value={
+            data.fiberLos
+          }
+          description="
+            Fiber signal lost
+          "
+          onClick={() =>
+            navigate(
+              '/onu?status=FIBER_LOS',
+            )
+          }
+          icon={
+            <ShieldAlert
+              className="
+                h-8
+                w-8
+              "
+            />
+          }
+        />
+        <SummaryCard
+          title="Unknown"
+          value={
+            data.unknown
+          }
+          description="
+            Unknown ONU state
+          "
+          onClick={() =>
+            navigate(
+              '/onu?status=UNKNOWN',
+            )
+          }
+          icon={
+            <HelpCircle className="h-8 w-8" />
+          }
+        />
       </div>
-
     </PageContainer>
   )
 }

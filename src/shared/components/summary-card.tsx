@@ -53,7 +53,7 @@ export function SummaryCard({
       className={cn(
 
         onClick &&
-        'cursor-pointer hover:shadow-md transition-shadow',
+        'cursor-pointer hover:shadow-md transition-all',
 
         className
       )}

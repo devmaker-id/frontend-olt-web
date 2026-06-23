@@ -4,10 +4,7 @@ import { getSummary } from '../api/dashboard.api'
 export function useSummary() {
 
   return useQuery({
-    queryKey: [
-      'onu-summary'
-    ],
-    queryFn:
-      getSummary
+    queryKey: ['onu-summary'],
+    queryFn: getSummary
   })
 }

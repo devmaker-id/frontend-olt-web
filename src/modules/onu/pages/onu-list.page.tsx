@@ -3,6 +3,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { PageContainer } from '@/shared/components/page-container'
 import { PageHeader } from '@/shared/components/page-header'
 import { LoadingState } from '@/shared/components/loading-state'
@@ -26,6 +27,8 @@ export function OnuListPage() {
     isLoading,
     error,
   } = useOnus()
+  const [searchParams] = useSearchParams()
+  const statusFilter = searchParams.get('status')
 
   const [selectedOnu, setSelectedOnu] = useState<Onu | null>(null)
   const [detailOpen, setDetailOpen] = useState(false)
@@ -39,66 +42,49 @@ export function OnuListPage() {
 
   useEffect(() => { setPage(1) }, [search])
 
-  const filteredData =
-    useMemo(() => {
+  const filteredData = useMemo(() => {
       const keyword = search.trim().toLowerCase()
-      if (!keyword) {
+      if (!keyword && !statusFilter) {
         return data
       }
       return data.filter(
-        (onu: Onu) =>
-
-          onu.onuName
-            ?.toLowerCase()
-            .includes(keyword)
-
-          ||
-
-          onu.onuMac
-            ?.toLowerCase()
-            .includes(keyword)
-
-          ||
-
-          onu.onuId
-            ?.toLowerCase()
-            .includes(keyword)
-
+        (onu: Onu) => {
+          const matchesSearch =
+            onu.onuName?.toLowerCase().includes(keyword)
+            ||
+            onu.onuMac?.toLowerCase().includes(keyword)
+            ||
+            onu.onuId?.toLowerCase().includes(keyword)
+          const matchesStatus =
+            !statusFilter || onu.connectionState === statusFilter
+          return (
+            matchesSearch && matchesStatus
+          )
+        }
       )
 
     }, [
       data,
       search,
+      statusFilter
     ])
 
-  const totalPages =
-    Math.max(
-
+  const totalPages = Math.max(
       1,
-
       Math.ceil(
         filteredData.length /
         perPage,
       ),
-
     )
 
   const paginatedData =
     useMemo(() => {
-
-      const start =
-        (page - 1) *
-        perPage
-
-      const end =
-        start +
-        perPage
-
+      const start = (page - 1) * perPage
+      const end = start + perPage
       return filteredData.slice(
         start,
         end,
       )
-
     }, [
       filteredData,
       page,
@@ -140,9 +126,15 @@ export function OnuListPage() {
     <PageContainer>
 
       <PageHeader
-        title="ONU List"
+        title={
+          statusFilter
+            ? `${statusFilter} ONU`
+            : 'ONU List'
+        }
         description={
-          `${filteredData.length} ONU(s)`
+          statusFilter
+            ? `Showing ${statusFilter.toLocaleLowerCase()} ONUs`
+            : `${filteredData.length} ONU(s)`
         }
       />
 
