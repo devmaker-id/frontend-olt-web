@@ -17,6 +17,7 @@ import type { Onu } from '../types/onu.types'
 import { OnuDetailSheet } from '../components/onu-detail-sheet'
 import { OnuRealtimeSheet } from '../components/onu-realtime-sheet'
 import { OnuReplaceDialog } from '../components/onu-replace-dialog'
+import { DeleteOnuDialog } from '../components/delete-onu-dialog'
 
 export function OnuListPage() {
 
@@ -30,6 +31,7 @@ export function OnuListPage() {
   const [detailOpen, setDetailOpen] = useState(false)
   const [realtimeOpen, setRealtimeOpen] = useState(false)
   const [replaceOpen, setReplaceOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -178,10 +180,8 @@ export function OnuListPage() {
         }
         onDelete={
           onu => {
-              console.log(
-                  'delete',
-                  onu
-              )
+            setSelectedOnu(onu)
+            setDeleteOpen(true)
           }
         }
       />
@@ -216,6 +216,16 @@ export function OnuListPage() {
         open={replaceOpen}
         onOpenChange={open => {
           setReplaceOpen(open)
+          if (!open) {
+            setSelectedOnu(null)
+          }
+        }}
+      />
+      <DeleteOnuDialog
+        onu={selectedOnu}
+        open={deleteOpen}
+        onOpenChange={open => {
+          setDeleteOpen(open)
           if (!open) {
             setSelectedOnu(null)
           }

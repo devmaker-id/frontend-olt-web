@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 interface Props {
+  isActive: boolean
   onView: () => void
   onRealtime: () => void
   onReplace: () => void
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function OnuActions({
+  isActive,
   onView,
   onRealtime,
   onReplace,
@@ -52,7 +54,7 @@ export function OnuActions({
         size="icon"
         variant="destructive"
         onClick={onDelete}
-        title="Delete ONU"
+        title={isActive ? 'Only inactive ONU can be deleted' : 'Delete ONU'}
       >
 
         <Trash2

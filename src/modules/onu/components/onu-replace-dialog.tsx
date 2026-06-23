@@ -7,6 +7,7 @@ import { useReplaceOnu } from '../hooks/use-replace-onu'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -14,20 +15,15 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
 import { useUnauthorizedOnus } from '../hooks/use-unauthorized-onus'
 import type { Onu } from '../types/onu.types'
+import { SearchableSelect } from './searchable-select'
 
 interface Props {
   onu: Onu | null
@@ -59,10 +55,12 @@ export function OnuReplaceDialog({
     if(!onu) {
         return
     }
+    const user = JSON.parse(localStorage.getItem('user')??'{}')
     await replaceMutation.mutateAsync({
         endpointId: onu.endpointId,
         unauthorizedOnuId,
-        reason
+        reason,
+        replacedBy: user.username
     })
     onOpenChange(false)
   }
@@ -89,24 +87,23 @@ export function OnuReplaceDialog({
           <DialogTitle>
             Replace ONU
           </DialogTitle>
+          <DialogDescription>
+            pergantian onu pelanggan
+          </DialogDescription>
 
         </DialogHeader>
 
         {onu && (
 
-          <div
-            className="
-              space-y-6
-            "
-          >
-
+          <div className="space-y-6">
             <Card>
-
               <CardHeader>
-
                 <CardTitle>
                   Current ONU
                 </CardTitle>
+                <CardDescription>
+                  information endpoint
+                </CardDescription>
 
               </CardHeader>
 
@@ -150,70 +147,25 @@ export function OnuReplaceDialog({
 
             </Card>
 
-            <div
-              className="
-                space-y-2
-              "
-            >
-
+            <div className="space-y-2">
               <Label>
                 Unauthorized ONU
               </Label>
-
-              <Select
-                value={
-                  unauthorizedOnuId
+              <SearchableSelect
+                value={unauthorizedOnuId}
+                onValueChange={setUnauthorizedOnuId}
+                placeholder="Select Unauthorized ONU"
+                searchPlaceholder="Search ONU..."
+                options={
+                  unauthorizedOnus.map(
+                    onu => ({
+                      value: onu.id,
+                      label: onu.onuName,
+                      description: `${onu.macAddress} • ONU ${onu.onuId}`,
+                    }),
+                  )
                 }
-                onValueChange={
-                  setUnauthorizedOnuId
-                }
-              >
-
-                <SelectTrigger
-                  className="
-                    w-full
-                  "
-                >
-
-                  <SelectValue
-                    placeholder="
-                      Select Unauthorized ONU
-                    "
-                  />
-
-                </SelectTrigger>
-
-                <SelectContent>
-
-                  {
-                    unauthorizedOnus.map(
-                      onu => (
-
-                        <SelectItem
-                          key={onu.id}
-                          value={onu.id}
-                        >
-
-                          {
-                            onu.onuName
-                          }
-
-                          {' - '}
-
-                          {
-                            onu.macAddress
-                          }
-
-                        </SelectItem>
-
-                      ),
-                    )
-                  }
-
-                </SelectContent>
-
-              </Select>
-
+              />
             </div>
 
             <div
@@ -229,13 +181,9 @@ export function OnuReplaceDialog({
               <Textarea
                 value={reason}
                 onChange={event =>
-                  setReason(
-                    event.target.value,
-                  )
+                  setReason(event.target.value)
                 }
-                placeholder="
-                  ONU damaged, customer replacement, etc...
-                "
+                placeholder="ONU damaged, customer replacement, etc..."
               />
 
             </div>

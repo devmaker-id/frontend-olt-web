@@ -100,7 +100,9 @@ export function OnuTable({
             data.map(
               onu => (
 
-                <TableRow
+                <TableRow className={
+                  !onu.isActive ? 'bg-yellow-50' : '' 
+                }
                   key={onu.id}
                 >
 
@@ -157,6 +159,7 @@ export function OnuTable({
                   <TableCell>
 
                     <OnuActions
+                      isActive={onu.isActive}
                       onView={() => onView?.(onu) }
                       onRealtime={() => onRealtime?.(onu) }
                       onReplace={() => onReplace?.(onu) }

@@ -81,4 +81,5 @@ export interface ReplaceOnuRequest {
   endpointId: string
   unauthorizedOnuId: string
   reason?: string
+  replacedBy?: string
 }

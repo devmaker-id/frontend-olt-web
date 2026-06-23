@@ -2,32 +2,21 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
-import { replaceOnu } from '../api/onu.api'
+import { deleteOnu } from '../api/onu.api'
 import { appToast } from '@/shared/lib/toast'
 
-export function useReplaceOnu() {
+export function useDeleteOnu() {
   const queryClient = useQueryClient()
-
   return useMutation({
-    mutationFn: replaceOnu,
+    mutationFn: deleteOnu,
     onSuccess() {
       queryClient.invalidateQueries({
         queryKey: [
           'onus',
         ],
       })
-      queryClient.invalidateQueries({
-        queryKey: [
-          'unauthorized-onus',
-        ],
-      })
-      queryClient.invalidateQueries({
-        queryKey: [
-          'onu-replacements',
-        ],
-      })
       appToast.success(
-        'ONU replaced successfully',
+        'ONU deleted successfully',
       )
     },
     onError(error: any) {
@@ -36,7 +25,7 @@ export function useReplaceOnu() {
           ?.data
           ?.message
         ||
-        error.message
+        error.message,
       )
     },
   })

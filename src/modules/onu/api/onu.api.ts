@@ -62,3 +62,13 @@ export async function replaceOnu(
     )
   return response.data
 }
+
+export async function deleteOnu(
+  id: string,
+) {
+
+  const response = await api.delete(
+      `/onu/${id}`,
+    )
+  return response.data.data
+}
