@@ -34,6 +34,7 @@ import { OltConnectSheet } from '../components/olt-connect-sheet'
 import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { OltOpticalSheet } from '../components/olt-optical-sheet'
+import { OltDiscoverOnuSheet } from '../components/olt-discover-onu-sheet'
 
 export function OltListPage() {
   const {
@@ -55,6 +56,7 @@ export function OltListPage() {
   const [detailOpen, setDetailOpen] = useState(false)
   const [connectOpen, setConnectOpen] = useState(false)
   const [opticalOpen, setOpticalOpen] = useState(false)
+  const [discoverOpen, setDiscoverOpen] = useState(false)
 
   const [deleteOpen, setDeleteOpen] = useState(false)
 
@@ -250,6 +252,12 @@ export function OltListPage() {
             setOpticalOpen(true)
           }
         }
+        onDiscover={
+          (olt) => {
+            setSelectedOlt(olt)
+            setDiscoverOpen(true)
+          }
+        }
         onView={
           (olt) => {
             setSelectedOlt(olt)
@@ -307,6 +315,11 @@ export function OltListPage() {
         olt={selectedOlt}
         open={opticalOpen}
         onOpenChange={setOpticalOpen}
+      />
+      <OltDiscoverOnuSheet
+        olt={selectedOlt}
+        open={discoverOpen}
+        onOpenChange={setDiscoverOpen}
       />
       <ConfirmDelete
         open={deleteOpen}

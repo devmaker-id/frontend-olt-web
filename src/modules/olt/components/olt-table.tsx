@@ -23,6 +23,7 @@ interface Props {
   olts: Olt[]
   onConnect: (olt: Olt) => void
   onOptical: (olt: Olt) => void
+  onDiscover: (olt: Olt) => void
   onView: (olt: Olt) => void
   onEdit: (olt: Olt) => void
   onDelete: (olt: Olt) => void
@@ -32,6 +33,7 @@ export function OltTable({
   olts,
   onConnect,
   onOptical,
+  onDiscover,
   onView,
   onEdit,
   onDelete,
@@ -100,6 +102,7 @@ export function OltTable({
                 <OltActions
                   onConnect={() => {onConnect(olt)}}
                   onOptical={() => {onOptical(olt)}}
+                  onDiscover={() => {onDiscover(olt)}}
                   onView={() => {onView(olt)}}
                   onEdit={() => {onEdit(olt)}}
                   onDelete={() => {onDelete(olt)}}

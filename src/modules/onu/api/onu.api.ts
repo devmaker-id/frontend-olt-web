@@ -2,9 +2,23 @@ import { api } from '../../../shared/api/api'
 import type { ApiResponse } from '@/shared/api/types'
 
 import type {
+  Onu,
   UnauthorizedOnu,
   AuthorizeOnuRequest,
 } from '../types/onu.types'
+
+// AUTHORIZE ONU
+export async function authorizeOnu(
+  payload: AuthorizeOnuRequest
+) {
+
+  const response = await api.post(
+      '/onu',
+      payload
+    )
+
+  return response.data
+}
 
 export async function getUnauthorizedOnus() {
   const response = await api.get<ApiResponse<UnauthorizedOnu[]>>(
@@ -13,15 +27,27 @@ export async function getUnauthorizedOnus() {
   return response.data.data
 }
 
-export async function authorizeOnu(
-  payload: AuthorizeOnuRequest
+export async function getOnus() {
+  const response = await api.get<ApiResponse<Onu[]>>('/onu')
+  return response.data.data
+}
+
+export async function getRealtimeOnu(
+  oltId: string,
+  portId: string,
+  onuId: string,
 ) {
 
-  const response =
-    await api.post(
-      '/onu-unauthorize',
-      payload
+  const response = await api.get(
+      `/olt/${oltId}/onu`,
+      {
+        params: {
+          portid: portId,
+          onuid: onuId,
+        },
+      },
     )
 
-  return response.data
+  return response.data.data
+
 }

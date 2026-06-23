@@ -3,43 +3,30 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import {
-  authorizeOnu,
-} from '../api/onu.api'
-
-import {
-  appToast,
-} from '@/shared/lib/toast'
+import { authorizeOnu } from '../api/onu.api'
+import { appToast } from '@/shared/lib/toast'
 
 export function useAuthorizeOnu() {
-
-  const queryClient =
-    useQueryClient()
+  const queryClient = useQueryClient()
 
   return useMutation({
-
-    mutationFn:
-      authorizeOnu,
-
+    mutationFn: authorizeOnu,
     onSuccess() {
-
       queryClient.invalidateQueries({
-        queryKey: [
-          'unauthorized-onus',
-        ],
+        queryKey: ['unauthorized-onus'],
       })
-
-      appToast.success(
-        'ONU authorized successfully',
-      )
+      queryClient.invalidateQueries({
+        queryKey: ['onus']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['endpoints']
+      })
+      appToast.success('ONU authorized successfully')
     },
-
-    onError(error) {
-
+    onError(error: any) {
       appToast.error(
-        error.message,
+        error?.response?.data?.message || error.message
       )
     },
-
   })
 }

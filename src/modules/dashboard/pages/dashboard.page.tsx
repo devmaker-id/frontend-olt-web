@@ -102,9 +102,12 @@ export function DashboardPage() {
         <SummaryCard
 
           title="Registered"
-
+          onClick={() =>
+            navigate(
+              '/onu'
+            )
+          }
           value={data.registered}
-
           icon={
             <CheckCircle2
               className="
@@ -130,8 +133,8 @@ export function DashboardPage() {
           icon={
             <AlertTriangle
               className="
-                h-5
-                w-5
+                h-8
+                w-8
               "
             />
           }

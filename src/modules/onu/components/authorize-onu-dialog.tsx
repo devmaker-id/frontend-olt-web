@@ -1,5 +1,7 @@
-import { useEffect } from 'react'
-import { useState } from 'react'
+import {
+  useEffect,
+  useState
+} from 'react'
 
 import {
   Dialog,
@@ -13,10 +15,6 @@ import {
 import {
   Button,
 } from '@/components/ui/button'
-
-import {
-  Input,
-} from '@/components/ui/input'
 
 import {
   Label,
@@ -38,28 +36,14 @@ import type {
   UnauthorizedOnu,
 } from '../types/onu.types'
 
-import type {
-  EndpointType,
-} from '@/modules/endpoint/types/endpoint.types'
+import { useEndpoints } from '@/modules/endpoint/hooks/use-endpoints'
 
 interface AuthorizeOnuDialogProps {
   onu: UnauthorizedOnu | null
-
   open: boolean
-
   onOpenChange: (
     open: boolean
   ) => void
-}
-
-const endpointLabels: Record<
-  EndpointType,
-  string
-> = {
-  CUSTOMER: 'Customer',
-  RESELLER: 'Reseller',
-  POP: 'POP Site',
-  BACKHAUL: 'Backhaul',
 }
 
 export function AuthorizeOnuDialog({
@@ -68,44 +52,11 @@ export function AuthorizeOnuDialog({
   onOpenChange,
 }: AuthorizeOnuDialogProps) {
 
-  const authorizeMutation =
-    useAuthorizeOnu()
+  const authorizeMutation = useAuthorizeOnu()
+  const [endpointId, setEndpointId] = useState('')
+  const { data: endpoints = [] } = useEndpoints()
 
-  const [
-    endpointType,
-    setEndpointType,
-  ] = useState<EndpointType>(
-    'CUSTOMER',
-  )
-
-  const [
-    endpointName,
-    setEndpointName,
-  ] = useState('')
-
-  const [
-    address,
-    setAddress,
-  ] = useState('')
-
-  useEffect(() => {
-
-    if (!onu) {
-      return
-    }
-
-    setEndpointType(
-      'CUSTOMER',
-    )
-
-    setEndpointName(
-      onu.onuName ||
-      `ONU-${onu.onuId}`,
-    )
-
-    setAddress('')
-
-  }, [onu])
+  useEffect(() => { setEndpointId('') }, [onu])
 
   async function handleSubmit(
     event: React.FormEvent,
@@ -118,22 +69,8 @@ export function AuthorizeOnuDialog({
     }
 
     await authorizeMutation.mutateAsync({
-
-      macAddress:
-        onu.macAddress,
-
-      endpoint: {
-
-        type:
-          endpointType,
-
-        name:
-          endpointName,
-
-        address,
-
-      },
-
+      unauthorizeId: onu.id,
+      endpointId,
     })
 
     onOpenChange(false)
@@ -217,12 +154,12 @@ export function AuthorizeOnuDialog({
           <div>
 
             <span className="font-medium">
-              EPON Port:
+              PORT:
             </span>
 
             {' '}
 
-            {onu.eponPort}
+            {onu.portId ?? '-'}
 
           </div>
 
@@ -238,107 +175,38 @@ export function AuthorizeOnuDialog({
           <div className="space-y-2">
 
             <Label>
-              Endpoint Type
+              Endpoint
             </Label>
 
             <Select
-              value={
-                endpointType
-              }
-              onValueChange={(
-                value,
-              ) =>
-                setEndpointType(
-                  value as EndpointType,
-                )
-              }
+              value={endpointId}
+              onValueChange={setEndpointId}
             >
 
-              <SelectTrigger>
+              <SelectTrigger className='w-full'>
 
-                <SelectValue />
+                <SelectValue placeholder="select endpoint..." />
 
               </SelectTrigger>
 
-              <SelectContent>
-
-                <SelectItem
-                  value="CUSTOMER"
-                >
-                  Customer
-                </SelectItem>
-
-                <SelectItem
-                  value="RESELLER"
-                >
-                  Reseller
-                </SelectItem>
-
-                <SelectItem
-                  value="POP"
-                >
-                  POP Site
-                </SelectItem>
-
-                <SelectItem
-                  value="BACKHAUL"
-                >
-                  Backhaul Link
-                </SelectItem>
-
+              <SelectContent className='overflow-y-auto'>
+                {
+                  endpoints.map(
+                    endpoint => (
+                      <SelectItem
+                        key={endpoint.id}
+                        value={endpoint.id}
+                      >
+                        {endpoint.internetNo}
+                        {' - '}
+                        {endpoint.name}
+                      </SelectItem>
+                    )
+                  )
+                }
               </SelectContent>
 
             </Select>
-
-          </div>
-
-          <div className="space-y-2">
-
-            <Label>
-              {
-                endpointLabels[
-                  endpointType
-                ]
-              }
-              {' '}
-              Name
-            </Label>
-
-            <Input
-              value={
-                endpointName
-              }
-              onChange={event =>
-                setEndpointName(
-                  event.target.value,
-                )
-              }
-              placeholder={
-                `${endpointLabels[
-                  endpointType
-                ]} Name`
-              }
-              required
-            />
-
-          </div>
-
-          <div className="space-y-2">
-
-            <Label>
-              Address
-            </Label>
-
-            <Input
-              value={address}
-              onChange={event =>
-                setAddress(
-                  event.target.value,
-                )
-              }
-              placeholder="Address"
-              required
-            />
 
           </div>
 
@@ -359,13 +227,11 @@ export function AuthorizeOnuDialog({
             <Button
               type="submit"
               disabled={
-                authorizeMutation.isPending
+                authorizeMutation.isPending || !endpointId
               }
             >
               {
-                authorizeMutation.isPending
-                  ? 'Authorizing...'
-                  : 'Authorize ONU'
+                authorizeMutation.isPending ? 'Authorizing...' : 'Authorize ONU'
               }
             </Button>
 
