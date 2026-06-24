@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { env } from '@/config/env'
 import { getToken, logout } from '../utils/auth'
 
 export const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api'
+  baseURL: env.apiUrl
 })
 
 api.interceptors.request.use(

@@ -2,7 +2,6 @@
 jien file. .env atanapi robah tina file anu tos aya .env.example
 sesuaikun jeng ka inginan
 
-### tapi kula lewih simpel kie
 ## lamun backend jeng fronend sami sareng
 robah ku anjen src/shared/api/api.ts
 ```ts
@@ -65,3 +64,10 @@ export const api = axios.create({
   baseURL: 'https://nsm.domainmu.com/api'
 })
 ```
+
+# alternativ na pake ENV
+robah ie dina file .env.example simpen kana .env
+```sh
+VITE_API_URL=hrrps://nms.domainku.com/api
+```
+teu kudu pake tanda '' / ""
