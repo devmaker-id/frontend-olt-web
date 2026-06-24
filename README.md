@@ -10,6 +10,23 @@ export const api = axios.create({
   baseURL: '/api'
 })
 ```
+# manawi janten beda BACKEND jeng FRONDEND
+```ts
+//esi anu lengkap
+export const api = axios.create({
+  baseURL: 'https://nsm.domainmu.com/api'
+})
+```
+
+# alternativ na pake ENV
+robah ie dina file .env.example simpen kana .env
+```sh
+VITE_API_URL=hrrps://nms.domainku.com/api
+```
+teu kudu pake tanda '' / ""
+
+---
+
 ie anu nyien puyeng 30-60 menit awal ngabangun karna teu jalan
 ## anu kadua kula pake nginx
 virtual host na kie, sa teuacana anjen tos install paket nginx sareng certbotna lengkap
@@ -39,6 +56,36 @@ server {
 }
 ```
 
+## Build Frontend
+
+```bash
+npm run build
+```
+
+Output:
+
+```text
+dist/
+```
+
+---
+
+# Deploy Frontend
+
+Create directory:
+
+```bash
+sudo mkdir -p /var/www/backend-olt
+```
+
+Copy build:
+
+```bash
+sudo cp -R dist/* /var/www/backend-olt/
+```
+
+---
+
 ### lajeng hirupan 
 ```sh
 sudo ln -s \
@@ -57,17 +104,35 @@ sudo systemctl reload nginx
 ```
 ---
 
-# manawi janten beda BACKEND jeng FRONDEND
-```ts
-//esi anu lengkap
-export const api = axios.create({
-  baseURL: 'https://nsm.domainmu.com/api'
-})
+# SSL Certificate
+
+Install Certbot:
+
+```bash
+sudo apt install certbot \
+python3-certbot-nginx -y
 ```
 
-# alternativ na pake ENV
-robah ie dina file .env.example simpen kana .env
-```sh
-VITE_API_URL=hrrps://nms.domainku.com/api
+Generate SSL:
+
+```bash
+sudo certbot --nginx
 ```
-teu kudu pake tanda '' / ""
+
+Follow wizard.
+
+---
+
+# Update Application
+## Frontend
+
+```bash
+cd /opt/frontend-olt-web
+git pull
+npm install
+npm run build
+sudo rsync -av dist/ /var/www/backend-olt/
+sudo systemctl reload nginx
+```
+
+---
