@@ -91,13 +91,12 @@ export async function getWebhookInfo(
 
 export async function setWebhook(
   id: string,
-  url: string
+  domain: string
 ) {
 
-  const response =
-    await api.post(
+  const response = await api.post(
       `/telegram-bots/${id}/set-webhook`,
-      { url }
+      { domain }
     )
 
   return response.data.data
@@ -108,8 +107,7 @@ deleteWebhook(
   id: string
 ) {
 
-  const response =
-    await api.delete(
+  const response = await api.delete(
       `/telegram-bots/${id}/webhook`
     )
 

@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# IE KANGGE NGAGUNAKUNA
+jien file. .env atanapi robah tina file anu tos aya .env.example
+sesuaikun jeng ka inginan
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### tapi kula lewih simpel kie
+## lamun backend jeng fronend sami sareng
+robah ku anjen src/shared/api/api.ts
+```ts
+// cekap esi ku /api
+export const api = axios.create({
+  baseURL: '/api'
+})
+```
+ie anu nyien puyeng 30-60 menit awal ngabangun karna teu jalan
+## anu kadua kula pake nginx
+virtual host na kie, sa teuacana anjen tos install paket nginx sareng certbotna lengkap
+### file site na kie
+```sh
+sudo nano \
+/etc/nginx/sites-available/backend-olt
+```
+### esi virtualna kie
+```sh
+server {
+    listen 80;
+    server_name nms.domain.com;
+    root /var/www/backend-olt;
+    index index.html;
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    location /api {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### lajeng hirupan 
+```sh
+sudo ln -s \
+/etc/nginx/sites-available/backend-olt \
+/etc/nginx/sites-enabled/
+```
+## Test Configuration
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```sh
+sudo nginx -t
+```
+---
+## Reload Nginx
+```sh
+sudo systemctl reload nginx
+```
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# manawi janten beda BACKEND jeng FRONDEND
+```ts
+//esi anu lengkap
+export const api = axios.create({
+  baseURL: 'https://nsm.domainmu.com/api'
+})
 ```
