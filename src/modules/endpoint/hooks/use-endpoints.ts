@@ -1,20 +1,9 @@
-import { useQuery }
-from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import { getEndpoints } from '../api/endpoint.api'
 
-import {
-  getEndpoints
-} from '../api/endpoint.api'
-
-export function
-useEndpoints() {
-
+export function useEndpoints() {
   return useQuery({
-
-    queryKey: [
-      'endpoints'
-    ],
-
-    queryFn:
-      getEndpoints
+    queryKey: ['endpoints'],
+    queryFn: getEndpoints
   })
 }
