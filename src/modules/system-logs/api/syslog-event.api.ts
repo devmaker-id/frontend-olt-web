@@ -2,7 +2,10 @@ import { api } from '../../../shared/api/api'
 
 export async function getSyslogEvents() {
   const response = await api.get('/syslog-event')
-  return response.data.data
+  if (!response.data.success) {
+    throw new Error(response.data.message)
+  }
+  return response.data.data ?? []
 }
 
 export async function getSyslogEventById(

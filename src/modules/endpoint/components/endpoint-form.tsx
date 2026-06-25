@@ -164,6 +164,7 @@ export function EndpointForm({
             </Label>
             <Input
               placeholder="08123456789"
+              required
               value={form.telepon || ''}
               onChange={(event) =>
                 setForm({

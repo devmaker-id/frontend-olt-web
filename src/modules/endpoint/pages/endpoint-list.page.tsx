@@ -62,14 +62,18 @@ export function EndpointListPage() {
     if(!selectedEndpoint) {
       return
     }
-    await deleteMutation.mutateAsync(
-      selectedEndpoint.id
-    )
-    toast.success(
-      'Endpoint deleted'
-    )
-    setDeleteOpen(false)
-    setSelectedEndpoint(null)
+    try {
+      await deleteMutation.mutateAsync(
+        selectedEndpoint.id
+      )
+      toast.success(
+        'Endpoint deleted'
+      )
+      setDeleteOpen(false)
+      setSelectedEndpoint(null)
+    } catch {
+      return
+    }
   }
 
   useEffect(() => {

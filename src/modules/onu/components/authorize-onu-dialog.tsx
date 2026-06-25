@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { useAuthorizeOnu } from '../hooks/use-authorize-onu'
 import type { UnauthorizedOnu } from '../types/onu.types'
-import { useEndpoints } from '@/modules/endpoint/hooks/use-endpoints'
+import { notUsedEndpoint } from '@/modules/endpoint/hooks/use-endpoints'
 import { SearchableSelect } from '@/shared/components/searchable-select'
 
 interface AuthorizeOnuDialogProps {
@@ -34,7 +34,7 @@ export function AuthorizeOnuDialog({
 
   const authorizeMutation = useAuthorizeOnu()
   const [endpointId, setEndpointId] = useState('')
-  const { data: endpoints = [] } = useEndpoints()
+  const { data: endpoints = [] } = notUsedEndpoint()
 
   useEffect(() => { setEndpointId('') }, [onu])
 

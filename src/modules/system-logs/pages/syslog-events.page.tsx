@@ -34,8 +34,7 @@ export default function SyslogEventsPage() {
     refetch,
   } = useSyslogEvents()
 
-  const deleteMutation =
-    useDeleteSyslogEvent()
+  const deleteMutation = useDeleteSyslogEvent()
 
   const [
     selectedEvent,
@@ -101,10 +100,7 @@ export default function SyslogEventsPage() {
     )
   }
 
-  if (
-    !data ||
-    data.length === 0
-  ) {
+  if (!data || data.length === 0) {
     return (
       <EmptyState
         title='No Syslog Event'

@@ -21,6 +21,19 @@ export async function getEndpoints() {
   return response.data.data
 }
 
+export async function getEndpointNotUsed() {
+  const response = await api.get<
+      ApiListResponse<Endpoint>
+    >('/endpoint/not-used')
+  return response.data.data
+}
+export async function getEndpointIstUsed() {
+  const response = await api.get<
+      ApiListResponse<Endpoint>
+    >('/endpoint/is-used')
+  return response.data.data
+}
+
 export async function getEndpointById(
   id: string,
 ) {

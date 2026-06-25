@@ -17,18 +17,9 @@ export function useDeleteEndpoint() {
       })
     },
     onError(error: any) {
-
-    const message =
-      error?.response?.data?.message
-
-    const details =
-      error?.response?.data?.errors
-
-    if (
-      message ===
-      'ENDPOINT_CANNOT_DELETE'
-    ) {
-
+    const message = error?.response?.data?.message
+    const details = error?.response?.data?.errors
+    if (message === 'ENDPOINT_CANNOT_DELETE') {
       appToast.error(
         [
           'Endpoint cannot be deleted.',
@@ -36,16 +27,9 @@ export function useDeleteEndpoint() {
           `Replacement: ${details?.replacements ?? 0}`,
         ].join(' '),
       )
-
       return
-
     }
-
-    appToast.error(
-      message ||
-      error.message,
-    )
-
+    appToast.error(message || error.message)
   }
 
   })

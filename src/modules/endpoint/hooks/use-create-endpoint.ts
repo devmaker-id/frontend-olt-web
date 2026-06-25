@@ -12,9 +12,7 @@ export function useCreateEndpoint() {
     mutationFn: createEndpoint,
     onSuccess() {
       queryClient.invalidateQueries({
-        queryKey: [
-          'endpoints'
-        ],
+        queryKey: ['endpoints'],
       })
     }
   })

@@ -12,9 +12,7 @@ import type { CreateEndpointRequest } from "../types/endpoint.types";
 
 interface CreateEndpointDialogProps {
     open: boolean
-    onOpenChange: (
-        open: boolean
-    ) => void
+    onOpenChange: (open: boolean) => void
 }
 
 export function CreateEndpointDialog({
@@ -28,16 +26,11 @@ export function CreateEndpointDialog({
     ) {
         try {
             await createMutation.mutateAsync(data)
-            toast.success(
-                'Endpoint Created'
-            )
+            toast.success('Endpoint Created')
             onOpenChange(false)
         } catch (error: any) {
             const response = error?.response?.data
-            toast.error(
-                response?.message?.data ??
-                'Failed to create endpoint'
-            )
+            toast.error(response?.errors ?? 'Failed to create endpoint')
         }
     }
     
