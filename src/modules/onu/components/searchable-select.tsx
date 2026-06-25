@@ -55,17 +55,11 @@ interface Props {
 }
 
 export function SearchableSelect({
-
   value,
-
   placeholder = 'Select option',
-
   searchPlaceholder = 'Search...',
-
   options,
-
   onValueChange,
-
 }: Props) {
 
   const [
@@ -102,11 +96,7 @@ export function SearchableSelect({
             justify-between
           "
         >
-
-          {selected
-            ? selected.label
-            : placeholder}
-
+          {selected ? selected.label : placeholder}
           <ChevronsUpDown
             className="
               ml-2
@@ -122,10 +112,8 @@ export function SearchableSelect({
       </PopoverTrigger>
 
       <PopoverContent
-        className="
-          w-[400px]
-          p-0
-        "
+        className="w-[360px] p-0"
+        onWheel={(e) => {e.stopPropagation()}}
       >
 
         <Command>

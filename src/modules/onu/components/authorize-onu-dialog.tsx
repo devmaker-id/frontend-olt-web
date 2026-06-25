@@ -11,32 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-
-import {
-  Button,
-} from '@/components/ui/button'
-
-import {
-  Label,
-} from '@/components/ui/label'
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
-import {
-  useAuthorizeOnu,
-} from '../hooks/use-authorize-onu'
-
-import type {
-  UnauthorizedOnu,
-} from '../types/onu.types'
-
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { useAuthorizeOnu } from '../hooks/use-authorize-onu'
+import type { UnauthorizedOnu } from '../types/onu.types'
 import { useEndpoints } from '@/modules/endpoint/hooks/use-endpoints'
+import { SearchableSelect } from '@/shared/components/searchable-select'
 
 interface AuthorizeOnuDialogProps {
   onu: UnauthorizedOnu | null
@@ -61,21 +41,16 @@ export function AuthorizeOnuDialog({
   async function handleSubmit(
     event: React.FormEvent,
   ) {
-
     event.preventDefault()
-
     if (!onu) {
       return
     }
-
     await authorizeMutation.mutateAsync({
       unauthorizeId: onu.id,
       endpointId,
     })
-
     onOpenChange(false)
   }
-
   if (!onu) {
     return null
   }
@@ -83,164 +58,89 @@ export function AuthorizeOnuDialog({
   return (
     <Dialog
       open={open}
-      onOpenChange={
-        onOpenChange
-      }
+      onOpenChange={onOpenChange}
     >
-
       <DialogContent>
-
         <DialogHeader>
-
           <DialogTitle>
             Authorize ONU
           </DialogTitle>
-
           <DialogDescription>
             Authorize discovered ONU
             and assign it to an endpoint.
           </DialogDescription>
-
         </DialogHeader>
-
-        <div
-          className="
-            grid
-            gap-2
-            rounded-lg
-            border
-            p-4
-            text-sm
-            md:grid-cols-2
-          "
-        >
-
+        <div className="grid gap-2 rounded-lg border p-4 text-sm md:grid-cols-2">
           <div>
-
             <span className="font-medium">
               ONU ID:
             </span>
-
             {' '}
-
             {onu.onuId}
-
           </div>
-
           <div>
-
-            <span className="font-medium">
-              ONU Name:
-            </span>
-
-            {' '}
-
-            {onu.onuName || '-'}
-
-          </div>
-
-          <div>
-
-            <span className="font-medium">
-              MAC Address:
-            </span>
-
-            {' '}
-
-            {onu.macAddress}
-
-          </div>
-
-          <div>
-
             <span className="font-medium">
               PORT:
             </span>
-
             {' '}
-
             {onu.portId ?? '-'}
-
           </div>
-
+          <div>
+            <span className="font-medium">
+              ONU Name:
+            </span>
+            {' '}
+            {onu.onuName || '-'}
+          </div>
+          <div>
+            <span className="font-medium">
+              MAC Address:
+            </span>
+            {' '}
+            {onu.macAddress}
+          </div>
         </div>
-
         <form
-          onSubmit={
-            handleSubmit
-          }
+          onSubmit={handleSubmit}
           className="space-y-4"
         >
-
           <div className="space-y-2">
-
             <Label>
               Endpoint
             </Label>
-
-            <Select
+            <SearchableSelect
               value={endpointId}
               onValueChange={setEndpointId}
-            >
-
-              <SelectTrigger className='w-full'>
-
-                <SelectValue placeholder="select endpoint..." />
-
-              </SelectTrigger>
-
-              <SelectContent className='overflow-y-auto'>
-                {
-                  endpoints.map(
-                    endpoint => (
-                      <SelectItem
-                        key={endpoint.id}
-                        value={endpoint.id}
-                      >
-                        {endpoint.internetNo}
-                        {' - '}
-                        {endpoint.name}
-                      </SelectItem>
-                    )
-                  )
-                }
-              </SelectContent>
-
-            </Select>
-
+              placeholder="Select Endpoint"
+              searchPlaceholder="Search Endpoint..."
+              options={
+                endpoints.map(
+                  endpoint => ({
+                    value: endpoint.id,
+                    label: endpoint.name,
+                    description: endpoint.id,
+                  }),
+                )
+              }
+            />
           </div>
-
           <DialogFooter>
-
             <Button
               type="button"
               variant="outline"
-              onClick={() =>
-                onOpenChange(
-                  false,
-                )
-              }
+              onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-
             <Button
               type="submit"
-              disabled={
-                authorizeMutation.isPending || !endpointId
-              }
+              disabled={authorizeMutation.isPending || !endpointId}
             >
-              {
-                authorizeMutation.isPending ? 'Authorizing...' : 'Authorize ONU'
-              }
+              {authorizeMutation.isPending ? 'Authorizing...' : 'Authorize ONU'}
             </Button>
-
           </DialogFooter>
-
         </form>
-
       </DialogContent>
-
     </Dialog>
   )
 }

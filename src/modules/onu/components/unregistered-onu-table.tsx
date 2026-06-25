@@ -25,12 +25,8 @@ import { EmptyState } from '@/shared/components/data-table/empty-state'
 
 interface Props {
   onus: UnauthorizedOnu[]
-
   isLoading: boolean
-
-  onAuthorize: (
-    onu: UnauthorizedOnu
-  ) => void
+  onAuthorize: (onu: UnauthorizedOnu) => void
 }
 
 export function UnregisteredOnuTable({
