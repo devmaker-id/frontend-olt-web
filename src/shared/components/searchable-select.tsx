@@ -68,12 +68,18 @@ export function SearchableSelect({
         className="w-[400px] max-w-[95vw] p-0"
         align="start"
         onWheel={(e) => e.stopPropagation()}
+        style={{touchAction: "pan-y"}}
       >
         <Command>
           <CommandInput
             placeholder={searchPlaceholder}
           />
-          <CommandList>
+          <CommandList
+            style={{
+              touchAction: "pan-y",
+              WebkitOverflowScrolling: "touch"
+            }}
+          >
             <CommandEmpty>
               {emptyText}
             </CommandEmpty>

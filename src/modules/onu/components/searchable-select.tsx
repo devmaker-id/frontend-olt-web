@@ -114,6 +114,9 @@ export function SearchableSelect({
       <PopoverContent
         className="w-[360px] p-0"
         onWheel={(e) => {e.stopPropagation()}}
+        style={{
+          touchAction: "pan-y"
+        }}
       >
 
         <Command>
@@ -124,7 +127,12 @@ export function SearchableSelect({
             }
           />
 
-          <CommandList>
+          <CommandList
+            style={{
+              touchAction: "pan-y",
+              WebkitOverflowScrolling: "touch"
+            }}
+          >
 
             <CommandEmpty>
 
