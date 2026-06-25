@@ -18,16 +18,15 @@ export function SidebarContent() {
       />
     )
   }
-  const filteredSections = sidebarConfig.filter(
-    section => {
-      if (!section.roles) {
+  const filteredSections = sidebarConfig.map(section => ({
+    ...section,
+    items: section.items.filter(item => {
+      if (!item.roles) {
         return true
       }
-      return section.roles.includes(
-        user.role,
-      )
-    }
-  )
+      return item.roles.includes(user.role)
+    })
+  })).filter(section => section.items.length > 0)
 
   return (
 

@@ -12,12 +12,12 @@ export const onuNavigation = {
       label: 'ONU List',
       path: '/onu',
       icon: Wifi,
-      end: true
+      end: true,
     },
     {
       label: 'Unauthorized ONU',
       path: '/onu/unregistered',
-      icon: WifiOff
+      icon: WifiOff,
     }
   ]
 }

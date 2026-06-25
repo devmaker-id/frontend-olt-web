@@ -1,17 +1,15 @@
-import {
-  Bot
-} from 'lucide-react'
+import { Bot } from 'lucide-react'
 
 export const telegramBotNavigation = {
-
   title: 'Telegram',
-
+  roles: ['OWNER'],
   items: [
 
     {
       label: 'Telegram Bots',
       path: '/telegram-bots',
-      icon: Bot
+      icon: Bot,
+      roles: ['OWNER'],
     }
   ]
 }

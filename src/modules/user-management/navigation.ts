@@ -12,6 +12,7 @@ export const userManagementNavigation = {
       label: 'Users',
       path: '/users',
       icon: Users,
+      roles: ['OWNER']
     },
   ],
 

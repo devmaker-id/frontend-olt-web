@@ -4,11 +4,13 @@ import { Server } from 'lucide-react'
 export const oltNavigation:
   NavigationSection = {
   title: 'Network',
+  roles: ['OWNER'],
   items: [
     {
       label: 'OLTs',
       path: '/olts',
-      icon: Server
+      icon: Server,
+      roles: ['OWNER'],
     }
   ]
 }

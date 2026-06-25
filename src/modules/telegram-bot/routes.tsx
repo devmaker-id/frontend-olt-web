@@ -1,13 +1,14 @@
-import {
-  TelegramBotsPage,
-} from './pages/telegram-bots.page'
+import { OwnerRoute } from '@/shared/routes/owner-route'
+import { TelegramBotsPage } from './pages/telegram-bots.page'
 
 export const telegramBotRoutes = [
   {
     path: 'telegram-bots',
 
     element: (
-      <TelegramBotsPage />
+      <OwnerRoute>
+        <TelegramBotsPage />
+      </OwnerRoute>
     ),
   },
 ]

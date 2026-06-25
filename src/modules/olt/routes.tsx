@@ -1,5 +1,5 @@
+import { OwnerRoute } from '@/shared/routes/owner-route'
 import { lazyPage, } from '@/shared/lib/lazy-page'
-
 const OltListPage = lazyPage(
     () =>
       import(
@@ -13,7 +13,9 @@ export const oltRoutes = [
   {
     path: 'olts',
     element: (
-      <OltListPage />
+      <OwnerRoute>
+        <OltListPage />
+      </OwnerRoute>
     ),
   }
 

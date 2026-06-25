@@ -1,5 +1,4 @@
 import { lazyPage } from '@/shared/lib/lazy-page'
-
 const OnuListPage = lazyPage(() => import('./pages/onu-list.page'),
     'OnuListPage'
 )
@@ -15,9 +14,7 @@ export const onuRoutes = [
     )
   },
   {
-    path:
-      'onu/unregistered',
-
+    path: 'onu/unregistered',
     element: (
       <UnregisteredOnuPage />
     ),
