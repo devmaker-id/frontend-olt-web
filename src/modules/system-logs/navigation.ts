@@ -1,5 +1,6 @@
 import {
-  ShieldAlert
+  ShieldAlert,
+  Activity
 } from 'lucide-react'
 
 export const systemLogsNavigation = {
@@ -11,7 +12,13 @@ export const systemLogsNavigation = {
     {
       label: 'Telegram Access',
       path: '/system-logs/telegram-access',
-      icon: ShieldAlert
+      icon: ShieldAlert,
+      end: true
+    },
+    {
+      label: 'Syslog Events',
+      path: '/system-logs/syslog-events',
+      icon: Activity
     }
   ]
 }
