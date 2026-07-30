@@ -1,24 +1,19 @@
-import {
-  ShieldAlert,
-  Activity
-} from 'lucide-react'
+import type { NavigationNode } from '@/shared/navigation/navigation.types'
+import { ShieldAlert } from 'lucide-react'
 
-export const systemLogsNavigation = {
-  title: 'System Logs',
+export const systemLogsNavigation: NavigationNode = {
+  label: 'System Logs',
   roles: ['OWNER'],
-  items: [
+  icon: ShieldAlert,
+  children: [
     {
       label: 'Telegram Access',
       path: '/system-logs/telegram-access',
-      icon: ShieldAlert,
-      roles: ['OWNER'],
       end: true
     },
     {
       label: 'Syslog Events',
       path: '/system-logs/syslog-events',
-      icon: Activity,
-      roles: ['OWNER'],
     }
   ]
 }

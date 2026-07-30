@@ -1,17 +1,12 @@
-import type {
-  LucideIcon
-} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-export interface NavigationItem {
+export interface NavigationNode {
   label: string
-  path: string
-  icon: LucideIcon
-  roles?: string[]
+  icon?: LucideIcon
+  path?: string
   end?: boolean
-}
-
-export interface NavigationSection {
-  title: string
   roles?: string[]
-  items: NavigationItem[]
+  children?: NavigationNode[]
+  badge?: string | number
+  disabled?: boolean
 }

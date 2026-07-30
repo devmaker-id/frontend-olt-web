@@ -1,17 +1,9 @@
-import {
-  UserCog
-} from 'lucide-react'
+import type { NavigationNode } from '@/shared/navigation/navigation.types'
+import { UserCog } from 'lucide-react'
 
-export const telegramNavigation = {
-  title: 'Telegram',
+export const telegramNavigation: NavigationNode = {
+  label: 'Telegram Users',
+  path: '/telegram/users',
+  icon: UserCog,
   roles: ['OWNER'],
-  items: [
-
-    {
-      label: 'Telegram Users',
-      path: '/telegram/users',
-      icon: UserCog,
-      roles: ['OWNER'],
-    }
-  ]
 }

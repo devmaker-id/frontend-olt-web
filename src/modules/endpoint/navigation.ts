@@ -1,22 +1,9 @@
-import type {
-  NavigationSection
-} from '@/shared/navigation/navigation.types'
+import type { NavigationNode } from '@/shared/navigation/navigation.types'
+import { Users } from 'lucide-react'
 
-import {
-  Users
-} from 'lucide-react'
-
-export const endpointNavigation: NavigationSection = {
-
-  title: 'Customer',
-
-  items: [
-
-    {
-      label: 'Endpoints',
-      path: '/endpoints',
-      icon: Users,
-      end: true
-    }
-  ]
+export const endpointNavigation: NavigationNode = {
+  label: 'Endpoints',
+  icon: Users,
+  end: true,
+  path: '/endpoints',
 }

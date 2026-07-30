@@ -1,17 +1,8 @@
-import {
-  RefreshCcw
-} from 'lucide-react'
+import type { NavigationNode } from '@/shared/navigation/navigation.types'
+import { RefreshCcw } from 'lucide-react'
 
-export const onuReplacementNavigation = {
-
-  title: 'ONU Management',
-
-  items: [
-
-    {
-      label: 'ONU Replacement',
-      path: '/onu/replacements',
-      icon: RefreshCcw
-    }
-  ]
+export const onuReplacementNavigation: NavigationNode = {
+  label: 'ONU Replacement',
+  icon: RefreshCcw,
+  path: '/onu/replacements',
 }
