@@ -1,3 +1,4 @@
+import { env } from '@/config/env'
 import {
   useMutation,
   useQueryClient,
@@ -17,7 +18,7 @@ interface SetWebhookPayload {
 
 export function useSetWebhook() {
   const queryClient = useQueryClient()
-  const domain = 'https://devtun.my.id'
+  const domain = env.domainUrl
 
   return useMutation({
     mutationFn: ({

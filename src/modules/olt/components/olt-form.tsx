@@ -16,7 +16,11 @@ import type {
   OltConnectionType
  } from '../types/olt.types'
 
+ import type { TelegramBot } from '@/modules/telegram-bot/types/telegram-bot.types'
+
 interface OltFormData {
+  telegramBotId: string
+
   name: string
   syslogName: string
 
@@ -35,6 +39,8 @@ interface OltFormData {
 }
 
 interface Props {
+  bots: TelegramBot[]
+
   initialValues?: Partial<Olt>
 
   isLoading?: boolean
@@ -47,11 +53,15 @@ interface Props {
 }
 
 export function OltForm({
+  bots = [],
   initialValues,
   onSubmit,
   isLoading,
   submitLabel = 'Save',
 }: Props) {
+  const [telegramBotId, setTelegramBotId] = useState(
+    initialValues?.telegramBotId ?? ''
+  )
   const [name, setName] =
     useState(
       initialValues?.name ?? ''
@@ -127,6 +137,8 @@ export function OltForm({
     event.preventDefault()
 
     await onSubmit({
+      telegramBotId,
+
       name,
       syslogName,
 
@@ -230,6 +242,26 @@ export function OltForm({
             )
           }
         />
+
+        <Select
+          value={telegramBotId}
+          onValueChange={setTelegramBotId}
+        >
+          <SelectTrigger className="h-10 w-full">
+            <SelectValue placeholder="Telegram Bot" />
+          </SelectTrigger>
+
+          <SelectContent>
+            {bots.map((bot) => (
+              <SelectItem
+                key={bot.id}
+                value={bot.id}
+              >
+                {bot.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         <Select
           value={platform}

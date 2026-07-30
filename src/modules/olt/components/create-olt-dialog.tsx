@@ -22,6 +22,8 @@ import type {
   CreateOltRequest,
 } from '../types/olt.types'
 
+import { useTelegramBots } from '@/modules/telegram-bot/hooks/use-telegram-bots'
+
 interface Props {
 
   open: boolean
@@ -42,6 +44,8 @@ export function CreateOltDialog({
 
   const createMutation =
     useCreateOlt()
+
+  const {data: bots = []} = useTelegramBots()
 
   async function handleSubmit(
     data: CreateOltRequest,
@@ -107,7 +111,7 @@ export function CreateOltDialog({
         </DialogHeader>
 
         <OltForm
-
+          bots={bots}
           onSubmit={
             handleSubmit
           }

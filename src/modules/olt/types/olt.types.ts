@@ -9,6 +9,7 @@ export type OltConnectionType =
 
 export interface Olt {
   id: string
+  telegramBotId: string
   name: string
   syslogName: string
   ipAddress: string
